@@ -11,7 +11,7 @@ const Square = styled.span.attrs(props => ({
     height: 20px;
     border: 1px solid var(--secondary-clr);
     opacity: 0.8;
-    border-radius: 2px;
+    border-radius: 100%;
     transition: background-color 1s;
 
     ${
