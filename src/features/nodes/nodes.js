@@ -1,52 +1,75 @@
-import produce from "immer";
+import { createSlice } from '@reduxjs/toolkit';
+import NodeTypes from "./NodeTypes";
+import { createEmptyNodes, areEqual } from './nodeHelpers';
 
-
-// Action 
-const CLICK_NODE = 'path-finding/nodes/CLICK_NODE';
-const RESET_NODES = 'path-finding/nodes/RESET_NODES';
 
 // Default state
-const COLS = 50;
+const COLS = 40;
 const ROWS = 30;
 
-function createEmptyNode(x, y) {
-    return { wall: false, x, y };
+function initNodesState(cols, rows) {
+    const nodes = createEmptyNodes(cols, rows);
+    const middleNodeY = Math.floor(nodes.length / 2);
+    const middleNodeX = Math.floor(nodes[0].length / 2);
+
+    return {
+        columns: cols,
+        rows,
+        nodes,
+        startNode: { x: middleNodeX, y: middleNodeY },
+        endNode: { x: middleNodeX, y: 10 }
+    };
 }
 
-function createEmptyNodes(cols, rows) {
-    return Array(rows).fill(0).map((_, row) =>
-        Array(cols).fill(0).map((_, col) => createEmptyNode(col, row)));
-}
+const defaultState = initNodesState(COLS, ROWS);
 
-const nodes = createEmptyNodes(COLS, ROWS);
-const startNodeX = Math.floor(nodes.length / 2);
-const startNodeY = Math.floor(nodes[0].length / 2);
-
-const defaultState = {
-  nodes,
-  startNode: nodes[startNodeY][startNodeX],
-  endNode: null
-};
-
-// Reducer
-export default function reducer (state = defaultState, action) {
-    switch (action.type) {
-        case CLICK_NODE:
-            return produce(state, draftState => {
-                draftState.nodes[action.payload.y][action.payload.x].wall = true
-            })
-        case RESET_NODES:
-            return defaultState;
-        default: 
-            return state;
+const nodesSlice = createSlice({
+    name: 'nodes',
+    initialState: defaultState,
+    reducers: {
+        setNodeType: (state, { payload }) => {
+            const { x, y, type } = payload;
+            const { startNode, endNode } = state;
+            if (!areEqual({ x, y }, startNode) && !areEqual({ x, y }, endNode)) {
+                state.nodes[y][x].type = type;
+            }
+        },
+        setNodesType: (state, { payload }) => {
+            const { nodes, type } = payload;
+            const { startNode, endNode } = state;
+            for (const node of nodes) {
+                if (!areEqual(node, startNode) && !areEqual(node, endNode)) {
+                    state.nodes[node.y][node.x].type = type;
+                }
+            }
+        },
+        setVisited: (state, { payload }) => {
+            const { nodes } = payload;
+            const { startNode, endNode } = state;
+            for (const node of nodes) {
+                if (!areEqual(node, startNode) && !areEqual(node, endNode)) {
+                    const stateNode = state.nodes[node.y][node.x];
+                    stateNode.visitedIndex = node.visitedIndex;
+                    stateNode.type = NodeTypes.visited;
+                }
+            }
+        },
+        setStartNode: (state, { payload }) => {
+            const { x, y } = payload;
+            if (state.nodes[y][x].type === NodeTypes.empty) {
+                state.startNode = { x, y };
+            }
+        },
+        setEndNode: (state, { payload }) => {
+            const { x, y } = payload;
+            if (state.nodes[y][x].type === NodeTypes.empty) {
+                state.endNode = { x, y };
+            }
+        },
+        resetNodes: () => defaultState
     }
-}
+});
 
-// Action creators
-export function clickNode(node) {
-    return { type: CLICK_NODE, payload: node };
-}
-
-export function resetNodes() {
-    return { type: RESET_NODES };
-}
+const { actions, reducer } = nodesSlice;
+export const { setNodeType, setNodesType, setStartNode, setEndNode, resetNodes, setVisited } = actions;
+export default reducer;

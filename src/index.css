@@ -1,4 +1,17 @@
+html {
+  --text-clr: var(--secondary-clr);
+  --primary-clr: #ff4301;
+  --background-clr: #4a3f35;
+  --secondary-clr: #fa7d09;
+
+  --start-node-clr: #3cc200;
+  --end-node-clr: #ff0000;
+  --visited-node-clr: #00a7e9;
+  --result-node-clr: #f7bd00;
+}
+
 body {
+  background-color: var(--background-clr);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
