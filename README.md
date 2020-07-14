@@ -1,68 +1,20 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+# Pathfinding tool
+This application was deployed on Github Pages. See result [here](https://groszczu.github.io/pathfinding-tool/).
+## About
+This project was created to learn how to use Redux, Redux Toolkit and React-Redux. Therefore performance of this application is not priority. To gain in performance and speed, you can replace React \<Nodes\> component with canvas implementation.
+  ### Pathfinding algorithms
+  Used algorithms:
+  - Dijkstra's algorithm (weight of all nodes are equal to 1)
+  - A* algorithm (in production)
+  ### User interface
+  #### Toolbar
+  By selecting suitable button from the toolbar you can change node to one of the following type:
+  - ![#ffeadb](https://via.placeholder.com/15/ffeadb/000000?text=+) `empty node`
+  - ![#4a3f35](https://via.placeholder.com/15/4a3f35/000000?text=+) `wall node`
+  - ![#3cc200](https://via.placeholder.com/15/3cc200/000000?text=+) `start node`
+  - ![#ff0000](https://via.placeholder.com/15/ff0000/000000?text=+) `end node`
+  #### Functional buttons
+  - To start visualization of pathfinding click 'Start' button underneath the grid.
+  - To reset nodes setting use 'Reset' button.
+  - 'Clear' button leaves walls, start node and end node untouched but clears all visited (![#00a7e9](https://via.placeholder.com/15/00a7e9/000000?text=+)) and result (![#f7bd00](https://via.placeholder.com/15/f7bd00/000000?text=+)) nodes.
+  - Button in bottom left corner allows to toggle between full screen and normal mode.
