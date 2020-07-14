@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import NodeTypes, { isToolType } from "./NodeTypes";
-import { createEmptyNodes, validateNodeChange, validateNodeTypeChange } from './nodeHelpers';
+import { createEmptyNodes, validateNodeChange, validateNodeTypeChange, createNode } from './nodeHelpers';
 
 
 // Default state
@@ -36,7 +36,9 @@ const nodesSlice = createSlice({
             const { x, y, type } = payload;
             const { startNode, endNode } = state;
             if (validateNodeTypeChange(payload, startNode, endNode, type)) {
-                state.nodes[y][x].type = type;
+                const stateNode = state.nodes[y][x];
+                stateNode.type = type;
+                stateNode.visitedIndex = null;
             }
         },
         setNodesType: (state, { payload }) => {
@@ -44,7 +46,9 @@ const nodesSlice = createSlice({
             const { startNode, endNode } = state;
             for (const node of nodes) {
                 if (validateNodeTypeChange(node, startNode, endNode, type)) {
-                    state.nodes[node.y][node.x].type = type;
+                    const stateNode = state.nodes[node.y][node.x];
+                    stateNode.type = type;
+                    stateNode.visitedIndex = null;
                 }
             }
         },
@@ -61,26 +65,31 @@ const nodesSlice = createSlice({
         },
         setStartNode: (state, { payload }) => {
             const { x, y } = payload;
-            const { startNode, endNode } = state;
-            if (validateNodeChange(payload, startNode, endNode)) {
-                state.nodes[startNode.y][startNode.x].type = NodeTypes.empty;
-                state.startNode = state.nodes[y][x];
-                state.startNode.type = NodeTypes.start;
+            const { startNode: oldStartNode, endNode } = state;
+            if (validateNodeChange(payload, oldStartNode, endNode)) {
+                state.nodes[oldStartNode.y][oldStartNode.x] = createNode(oldStartNode.x, oldStartNode.y);
+
+                const newStartNode = createNode(x, y, NodeTypes.start);
+                state.startNode = newStartNode;
+                state.nodes[y][x] = newStartNode;
             }
         },
         setEndNode: (state, { payload }) => {
             const { x, y } = payload;
-            const { startNode, endNode } = state;
-            if (validateNodeChange(payload, startNode, endNode)) {
-                state.nodes[endNode.y][endNode.x].type = NodeTypes.empty;
-                state.endNode = state.nodes[y][x];
-                state.endNode.type = NodeTypes.end;
+            const { startNode, endNode: oldEndNode } = state;
+            if (validateNodeChange(payload, startNode, oldEndNode)) {
+                state.nodes[oldEndNode.y][oldEndNode.x] = createNode(oldEndNode.x, oldEndNode.y);
+
+                const newEndNode = createNode(x, y, NodeTypes.end);
+                state.endNode = newEndNode;
+                state.nodes[y][x] = newEndNode;
             }
         },
         clearNodes: ({ nodes }) => {
             nodes.forEach(row => row.forEach(node => {
                 if (!isToolType(node.type))
                     node.type = NodeTypes.empty;
+                node.visitedIndex = null;
             }))
         },
         resetNodes: () => defaultState

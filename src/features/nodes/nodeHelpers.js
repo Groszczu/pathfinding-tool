@@ -3,11 +3,11 @@ import { setNodeType, setStartNode, setEndNode } from "./nodesSlice";
 
 export function createEmptyNodes(cols, rows) {
   return Array(rows).fill(0).map((_, row) =>
-    Array(cols).fill(0).map((_, col) => createEmptyNode(col, row)));
+    Array(cols).fill(0).map((_, col) => createNode(col, row)));
 }
 
-export function createEmptyNode(x, y) {
-  return { x, y, type: NodeTypes.empty, visitedIndex: null };
+export function createNode(x, y, type = NodeTypes.empty) {
+  return { x, y, type, visitedIndex: null };
 }
 
 export function areEqual(node1, node2) {
