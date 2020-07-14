@@ -1,11 +1,11 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import Button from "../../shared/Button"
 import { useDispatch } from 'react-redux';
-import { resetNodes } from "./nodes";
+import { resetNodes } from "./nodesSlice";
 
 const ResetButton = () => {
   const dispatch = useDispatch();
-  const reset = useCallback(() => dispatch(resetNodes()), [dispatch]);
+  const reset = () => dispatch(resetNodes());
   return <Button primary={true} onClick={reset}>Reset</Button>
 };
 

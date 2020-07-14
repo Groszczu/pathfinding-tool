@@ -1,24 +1,25 @@
-import { areEqual, neightbours } from "../../features/nodes/nodeHelpers";
+import { neightbours } from "../../features/nodes/nodeHelpers";
 import NodeTypes from "../../features/nodes/NodeTypes";
 
-export default function dijkstra(startNode, endNode, nodes) {
+export default function dijkstra(nodes) {
 
   const visited = [];
-  const distanceFromStart = nodes
+  let unvisited = nodes
     .flat()
     .filter(node => node.type !== NodeTypes.wall)
     .map(node => ({
     ...node,
-    distance: areEqual(node, startNode) ? 0 : Infinity,
+    distance: node.type === NodeTypes.start ? 0 : Infinity,
     previousNode: null
   }));
-  let unvisited = [...distanceFromStart];
 
   let i = 0;
   for (; unvisited.length !== 0; i++) {
     unvisited.sort((a, b) => a.distance - b.distance);
     const currentNode = unvisited[0];
     
+    // if lowest distance from start node in unvisited array equals Infinity
+    // it means there is no path from start to end, so we can end alghorithm
     if (currentNode.distance === Infinity) {
       return { visited, result: null, moves: i };
     }
@@ -34,15 +35,16 @@ export default function dijkstra(startNode, endNode, nodes) {
         :
         node;
     });
+
     visited.push({ ...currentNode, visitedIndex: i });
-    if (areEqual(currentNode, endNode)) {
+    if (currentNode.type === NodeTypes.end) {
       break;
     }
   }
 
   const result = [];
-  const endNodeData = visited.find(n => areEqual(n, endNode));
-  for (let node = endNodeData.previousNode; !areEqual(node, startNode); node = node.previousNode ) {
+  const endNodeData = visited.find(n => n.type === NodeTypes.end);
+  for (let node = endNodeData.previousNode; node.type !== NodeTypes.start; node = node.previousNode ) {
     result.push(node);
   }
 

@@ -4,10 +4,15 @@ html {
   --background-clr: #4a3f35;
   --secondary-clr: #fa7d09;
 
+  --empty-node-clr: #ffeadb;
   --start-node-clr: #3cc200;
   --end-node-clr: #ff0000;
   --visited-node-clr: #00a7e9;
   --result-node-clr: #f7bd00;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 body {

@@ -5,7 +5,6 @@ const Container = styled.div`
   width: 90%;
   max-width: 1000px;
   text-align: center;
-  padding: 0 2em;
   border-radius: 10px;
 `;
 
