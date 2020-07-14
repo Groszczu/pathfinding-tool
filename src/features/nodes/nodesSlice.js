@@ -36,9 +36,7 @@ const nodesSlice = createSlice({
             const { x, y, type } = payload;
             const { startNode, endNode } = state;
             if (validateNodeTypeChange(payload, startNode, endNode, type)) {
-                const stateNode = state.nodes[y][x];
-                stateNode.type = type;
-                stateNode.visitedIndex = null;
+                state.nodes[y][x] = createNode(x, y, type);
             }
         },
         setNodesType: (state, { payload }) => {
@@ -46,9 +44,8 @@ const nodesSlice = createSlice({
             const { startNode, endNode } = state;
             for (const node of nodes) {
                 if (validateNodeTypeChange(node, startNode, endNode, type)) {
-                    const stateNode = state.nodes[node.y][node.x];
-                    stateNode.type = type;
-                    stateNode.visitedIndex = null;
+                    const { x, y } = node;
+                    state.nodes[y][x] = createNode(x, y, type);
                 }
             }
         },

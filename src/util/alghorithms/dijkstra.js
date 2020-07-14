@@ -19,7 +19,7 @@ export default function dijkstra(nodes) {
     const currentNode = unvisited[0];
     
     // if lowest distance from start node in unvisited array equals Infinity
-    // it means there is no path from start to end, so we can end alghorithm
+    // it means there is no path from start to end, so we can end searching
     if (currentNode.distance === Infinity) {
       return { visited, result: null, moves: i };
     }
