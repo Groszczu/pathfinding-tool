@@ -1,10 +1,8 @@
 import React from 'react';
 import Nodes from '../features/nodes/Nodes.jsx';
-import ResetButton from '../features/nodes/ResetButton';
 import Container from '../shared/Container';
 import TitleHeader from '../shared/TitleHeader';
 import ToolBar from '../features/tools/ToolBar.jsx';
-import ClearButton from '../features/nodes/ClearButton.jsx';
 import FullscreenButton from '../features/tools/FullscreenButton.jsx';
 
 function App() {
@@ -12,9 +10,7 @@ function App() {
     <Container>
       <TitleHeader>Pathfinding tool</TitleHeader>
       <ToolBar />
-      <Nodes animationFrameDuration={5} />
-      <ResetButton />
-      <ClearButton />
+      <Nodes animationFrameDuration={20} />
       <FullscreenButton />
     </Container>
   );

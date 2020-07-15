@@ -8,14 +8,17 @@ import { useSelector } from 'react-redux';
 const ToolBar = () => {
     const dispatch = useDispatch();
     const selected = useSelector(({ tools }) => tools.toolType);
+
+    const boundSetToolType = (toolType) => dispatch(setToolType(toolType));
+
     return (
         <div>
             {toolTypes.map(type => <Button
                 key={type}
-                onClick={dispatch.bind(null, setToolType({ type }))}
+                onClick={() => boundSetToolType(type)}
+                selected={type === selected}
                 style={{
                     backgroundColor: nodeTypeColor[type],
-                    transform: type === selected ? 'scale(1.2, 1.2)' : null,
                     margin: '.4em'
                 }} />)}
         </div>

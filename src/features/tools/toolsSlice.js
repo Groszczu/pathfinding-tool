@@ -11,9 +11,8 @@ const toolsSlice = createSlice({
   initialState,
   reducers: {
     setToolType: (state, { payload }) => {
-      const { type } = payload;
-      if (isToolType(payload.type)) {
-        state.toolType = type;
+      if (isToolType(payload)) {
+        state.toolType = payload;
       }
     },
     toggleFullscreen: (state) => { state.fullscreen = !state.fullscreen }

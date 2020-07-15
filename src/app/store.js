@@ -9,7 +9,9 @@ const reducer = {
   tools: toolsReducer
 };
 
+const customizedMiddleware = [];
+
 export default configureStore({
   reducer,
-  middleware: [] 
+  middleware: customizedMiddleware 
 });

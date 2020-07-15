@@ -1,4 +1,4 @@
-import { neightbours } from "../../features/nodes/nodeHelpers";
+import { neighbors } from "../../features/nodes/nodeHelpers";
 import NodeTypes from "../../features/nodes/NodeTypes";
 
 export default function dijkstra(nodes) {
@@ -26,7 +26,7 @@ export default function dijkstra(nodes) {
 
     unvisited.shift(); //remove current node
     unvisited = unvisited.map(node => {
-      return neightbours(currentNode, node) ?
+      return neighbors(currentNode, node) ?
         {
           ...node,
           distance: Math.min(node.distance, currentNode.distance + 1), 

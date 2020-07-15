@@ -9,14 +9,12 @@ const Square = styled.span.attrs(({ delay, x, y }) => ({
         gridColumnEnd: 'span 1',
         gridRowEnd: 'span 1',
         transitionDelay: `${delay}ms`,
+        animationDelay: `${delay}ms`
     }
 }))`
     width: 100%;
     height: auto;
     border: 1px solid var(--secondary-clr);
-    opacity: 0.8;
-    border-radius: 100%;
-    transition: background-color 1s;
 
     ${props => nodeTypeStyle[props.type]}
 `;

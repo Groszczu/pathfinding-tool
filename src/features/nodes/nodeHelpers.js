@@ -1,4 +1,4 @@
-import NodeTypes, { isChangableType } from './NodeTypes';
+import NodeTypes, { isChangeableType } from './NodeTypes';
 import { setNodeType, setStartNode, setEndNode } from "./nodesSlice";
 
 export function createEmptyNodes(cols, rows) {
@@ -17,14 +17,14 @@ export function areEqual(node1, node2) {
   return node1.x === node2.x && node1.y === node2.y;
 }
 
-export function neightbours(node1, node2) {
+export function neighbors(node1, node2) {
   const xDistance = Math.abs(node1.x - node2.x);
   const yDistance = Math.abs(node1.y - node2.y);
   return xDistance + yDistance === 1;
 }
 
 export function validateNodeTypeChange(node, startNode, endNode, newType) {
-    return validateNodeChange(node, startNode, endNode) && isChangableType(newType);
+    return validateNodeChange(node, startNode, endNode) && isChangeableType(newType);
 
 }
 export function validateNodeChange(node, startNode, endNode) {

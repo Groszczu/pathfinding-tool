@@ -7,12 +7,16 @@ import { useSelector } from 'react-redux';
 const FullscreenButton = () => {
     const dispatch = useDispatch();
     const fullscreen = useSelector(({ tools }) => tools.fullscreen);
+
+    const boundToggleFullscreen = () => dispatch(toggleFullscreen());
+
     return (
-        <Button onClick={dispatch.bind(null, toggleFullscreen())}
+        <Button onClick={boundToggleFullscreen}
             style={{
                 position: 'fixed',
                 left: '.2em',
-                bottom: '.2em'
+                bottom: '.2em',
+                zIndex: '2'
             }}>{fullscreen ? '❌' : '🔼'}</Button>
     );
 };

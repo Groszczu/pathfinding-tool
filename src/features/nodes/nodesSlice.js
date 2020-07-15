@@ -21,6 +21,7 @@ function initNodesState(cols, rows) {
         columns: cols,
         rows,
         nodes,
+        canStartPathfinding: true,
         startNode,
         endNode
     };
@@ -42,10 +43,11 @@ const nodesSlice = createSlice({
         setNodesType: (state, { payload }) => {
             const { nodes, type } = payload;
             const { startNode, endNode } = state;
-            for (const node of nodes) {
+            for (const [i, node] of nodes.entries()) {
                 if (validateNodeTypeChange(node, startNode, endNode, type)) {
                     const { x, y } = node;
                     state.nodes[y][x] = createNode(x, y, type);
+                    if (payload.withIndex) state.nodes[y][x].visitedIndex = i;
                 }
             }
         },
@@ -59,6 +61,7 @@ const nodesSlice = createSlice({
                     stateNode.type = NodeTypes.visited;
                 }
             }
+            state.canStartPathfinding = false;
         },
         setStartNode: (state, { payload }) => {
             const { x, y } = payload;
@@ -82,12 +85,13 @@ const nodesSlice = createSlice({
                 state.nodes[y][x] = newEndNode;
             }
         },
-        clearNodes: ({ nodes }) => {
-            nodes.forEach(row => row.forEach(node => {
+        clearNodes: (state) => {
+            state.nodes.forEach(row => row.forEach(node => {
                 if (!isToolType(node.type))
                     node.type = NodeTypes.empty;
                 node.visitedIndex = null;
-            }))
+            }));
+            state.canStartPathfinding = true;
         },
         resetNodes: () => defaultState
     }

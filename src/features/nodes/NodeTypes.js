@@ -1,3 +1,5 @@
+import { scaleKeyframe, visitedNodeKeyframe } from "../../shared/Keyframes";
+import { css } from "styled-components";
 
 const NodeTypes = {
   empty: 'empty_node',
@@ -8,7 +10,7 @@ const NodeTypes = {
   end: 'end_node'
 };
 
-export const changableTypes = [
+export const changeableTypes = [
   NodeTypes.empty,
   NodeTypes.wall,
   NodeTypes.visited,
@@ -22,8 +24,8 @@ export const toolTypes = [
   NodeTypes.end
 ];
 
-export function isChangableType(type) {
-  return changableTypes.includes(type);
+export function isChangeableType(type) {
+  return changeableTypes.includes(type);
 };
 
 export function isToolType(type) {
@@ -32,7 +34,7 @@ export function isToolType(type) {
 
 export const nodeTypeColor = {
   [NodeTypes.empty]: 'var(--empty-node-clr)',
-  [NodeTypes.wall]: 'var(--background-clr)',
+  [NodeTypes.wall]: 'var(--wall-node-clr)',
   [NodeTypes.visited]: 'var(--visited-node-clr)',
   [NodeTypes.result]: 'var(--result-node-clr)',
   [NodeTypes.start]: 'var(--start-node-clr)',
@@ -41,11 +43,24 @@ export const nodeTypeColor = {
 
 export const nodeTypeStyle = {
   [NodeTypes.empty]: '',
-  [NodeTypes.wall]: `background: ${nodeTypeColor[NodeTypes.wall]};`,
-  [NodeTypes.visited]: `background: ${nodeTypeColor[NodeTypes.visited]};`,
-  [NodeTypes.result]: `background: ${nodeTypeColor[NodeTypes.result]};`,
-  [NodeTypes.start]: `background: ${nodeTypeColor[NodeTypes.start]}; box-shadow: 0px 0px 10px 5px rgba(9,135,0,1);`,
-  [NodeTypes.end]: `background: ${nodeTypeColor[NodeTypes.end]}; box-shadow: 0px 0px 10px 5px rgba(252,3,3,1);`,
+  [NodeTypes.wall]: css`
+    background: ${nodeTypeColor[NodeTypes.wall]};
+    animation: ${scaleKeyframe} .2s linear;`,
+  [NodeTypes.visited]: css`
+    background: ${nodeTypeColor[NodeTypes.visited]};
+    animation: ${visitedNodeKeyframe} .3s linear;`,
+  [NodeTypes.result]: css`
+    background: ${nodeTypeColor[NodeTypes.result]};
+    animation: ${scaleKeyframe} .3s linear;
+    transition: background-color .5s;`,
+  [NodeTypes.start]: css`
+    background: ${nodeTypeColor[NodeTypes.start]};
+    box-shadow: 0px 0px 10px 5px rgba(9,135,0,1);
+    z-index: 3`,
+  [NodeTypes.end]: css`
+    background: ${nodeTypeColor[NodeTypes.end]};
+    box-shadow: 0px 0px 10px 5px rgba(252,3,3,1);
+    z-index: 3`,
 };
 
 
