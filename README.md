@@ -1,5 +1,5 @@
 # Pathfinding tool
-This application was deployed on Github Pages. See result [here](https://groszczu.github.io/pathfinding-tool/).
+This application was deployed on Github Pages. See the result [here](https://groszczu.github.io/pathfinding-tool/).
 ## About
 This project was created to learn how to use Redux, Redux Toolkit and React-Redux. Therefore performance of this application is not priority. I'm aware of disadvantages  of using React in this kind of application (lots of DOM re-renders). If you find yourself in need to increase speed and performance of this app, you can replace React \<Nodes\> component with canvas implementation.
   ### Pathfinding algorithms
