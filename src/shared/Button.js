@@ -9,9 +9,16 @@ const Button = styled.button`
   margin: 2% auto 0 auto;
   border: 2px solid black;
   cursor: pointer;
-  opacity: ${props => props.selected ? 1 : 0.6};
-  ${props => props.selected && css`transform: scale(1.2, 1.2);`}
+  opacity: 0.6;
   transition: all 0.25s;
+
+  ${
+    props => props.selected && css`
+      opacity: 1;
+      transform: scale(1.2, 1.2);
+      border-color: var(--secondary-clr);
+    `
+  }
 
   :hover {
     opacity: 1;

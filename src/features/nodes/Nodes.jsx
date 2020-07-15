@@ -9,6 +9,7 @@ import dijkstra from '../../util/algorithms/dijkstra';
 import Button from '../../shared/Button';
 import useNodesSlice from './useNodesSlice';
 import { getNodeChangeAction } from './nodeHelpers';
+import { useRef } from 'react';
 
 const Nodes = ({ animationFrameDuration }) => {
 
@@ -32,22 +33,24 @@ const Nodes = ({ animationFrameDuration }) => {
     const changeNodeType = (node, type) =>
         dispatch(getNodeChangeAction(node.x, node.y, type));
 
+    let resultTimeout = useRef(null);
     const startPathfinding = () => {
         const { visited, result, moves } = dijkstra(nodes);
         visited && dispatch(setVisited({ nodes: visited }));
-        result &&
-            setTimeout(() =>
+        if (result) {
+            resultTimeout.current = setTimeout(() =>
                 dispatch(setNodesType({
                     nodes: result,
                     type: NodeTypes.result,
                     withIndex: true
                 })
-                )
+                )   
                 , animationFrameDuration * moves);
+        }
     };
 
-    const boundClearNodes = () => dispatch(clearNodes());
-    const boundResetNode = () => dispatch(resetNodes());
+    const boundClearNodes = () => { clearTimeout(resultTimeout.current); dispatch(clearNodes()); };
+    const boundResetNode = () => { clearTimeout(resultTimeout.current); dispatch(resetNodes()); };
 
     return (
         <>
