@@ -52,7 +52,7 @@ const Nodes = ({ animationFrameDuration }) => {
     return (
         <>
             <GridContainer fullscreen={fullscreen} columns={columns} rows={rows}
-                onMouseDown={() => canStartPathfinding ? setMousePressed(true) : alert('Clear grid first')}
+                onMouseDown={() => canStartPathfinding && setMousePressed(true)}
                 onMouseUp={() => canStartPathfinding && setMousePressed(false)}>
                 {
                     nodes.flat().map(node =>
