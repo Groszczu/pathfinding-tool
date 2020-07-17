@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import GridContainer from '../../shared/GridContainer';
 import Node from './Node';
@@ -6,10 +6,9 @@ import { setNodesType, setVisited, clearNodes, resetNodes } from './nodesSlice';
 import { mousePress, mouseRelease } from '../mouse/mouseSlice';
 import NodeTypes from './NodeTypes';
 import dijkstra from '../../util/algorithms/dijkstra';
-import Button from '../../shared/Button';
 import useNodesSlice from './useNodesSlice';
 import { getNodeChangeAction } from './nodeHelpers';
-import { useRef } from 'react';
+import OperationsPanel from '../tools/OperationsPanel';
 
 const Nodes = ({ animationFrameDuration }) => {
 
@@ -44,13 +43,13 @@ const Nodes = ({ animationFrameDuration }) => {
                     type: NodeTypes.result,
                     withIndex: true
                 })
-                )   
+                )
                 , animationFrameDuration * moves);
         }
     };
 
     const boundClearNodes = () => { clearTimeout(resultTimeout.current); dispatch(clearNodes()); };
-    const boundResetNode = () => { clearTimeout(resultTimeout.current); dispatch(resetNodes()); };
+    const boundResetNodes = () => { clearTimeout(resultTimeout.current); dispatch(resetNodes()); };
 
     return (
         <>
@@ -65,12 +64,14 @@ const Nodes = ({ animationFrameDuration }) => {
                             onMouseOver={changeNodeTypeIfPressed.bind(null, node, selectedTool)} />)
                 }
             </GridContainer>
-            {
-                canStartPathfinding
-                    ? <Button onClick={startPathfinding}>Start</Button>
-                    : <Button onClick={boundClearNodes} primary={true}>Clear</Button>
-            }
-            <Button onClick={boundResetNode} primary={true}>Reset</Button>
+
+            <OperationsPanel
+                fullscreen={fullscreen}
+                canStart={canStartPathfinding}
+                startOnClick={startPathfinding}
+                clearOnClick={boundClearNodes}
+                resetOnClick={boundResetNodes}
+            />
         </>
     );
 };

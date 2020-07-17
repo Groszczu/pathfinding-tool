@@ -34,9 +34,11 @@ const GridContainer = styled.div`
         const { screen } = window;
         const { width, height } = screen;
         const nodesOnShorterDimension = width > height ? props.rows : props.columns;
+        const nodeSize = `calc(100vmin / ${nodesOnShorterDimension})`;
+
         return css`
-            grid-template-columns: repeat(${props.columns}, calc(100vmin / ${nodesOnShorterDimension}));
-            grid-template-rows: repeat(${props.rows}, calc(100vmin / ${nodesOnShorterDimension}));
+            grid-template-columns: repeat(${props.columns}, ${nodeSize});
+            grid-template-rows: repeat(${props.rows}, ${nodeSize});
             border: none;
             overflow: hidden;
             position: absolute;

@@ -12,8 +12,8 @@ const Square = styled.span.attrs(({ delay, x, y }) => ({
         animationDelay: `${delay}ms`
     }
 }))`
-    width: 100%;
-    height: auto;
+    width: fill;
+    height: fill;
     border: 1px solid var(--secondary-clr);
 
     ${props => nodeTypeStyle[props.type]}

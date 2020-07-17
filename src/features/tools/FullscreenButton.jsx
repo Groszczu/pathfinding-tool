@@ -14,8 +14,9 @@ const FullscreenButton = () => {
         <Button onClick={boundToggleFullscreen}
             style={{
                 position: 'fixed',
-                left: '.2em',
-                bottom: '.2em',
+                left: 0,
+                bottom: 0,
+                margin: '.4em',
                 zIndex: '2'
             }}>{fullscreen ? '❌' : '🔼'}</Button>
     );

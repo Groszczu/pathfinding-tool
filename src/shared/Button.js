@@ -5,12 +5,14 @@ const Button = styled.button`
   background-color: ${props => props.primary ? 'var(--primary-clr)' : 'var(--secondary-clr)'};
   font-size: 1.5rem;
   color: var(--light-txt-clr);
-  padding: .5em 1.5em;
+  padding: ${props => props.children ? '.5em .75em' : '.75em'};
+  text-align: center;
+  max-width: 100px;
   margin: 2% auto 0 auto;
   border: 2px solid black;
   cursor: pointer;
   opacity: 0.6;
-  transition: all 0.25s;
+  transition: opacity 0.25s, transform 0.25s;
 
   ${
     props => props.selected && css`
