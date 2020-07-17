@@ -1,9 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import GridContainer from '../../shared/GridContainer';
 import Node from './Node';
 import { setNodesType, setVisited, clearNodes, resetNodes } from './nodesSlice';
-import { mousePress, mouseRelease } from '../mouse/mouseSlice';
 import NodeTypes from './NodeTypes';
 import dijkstra from '../../util/algorithms/dijkstra';
 import useNodesSlice from './useNodesSlice';
@@ -12,7 +11,7 @@ import OperationsPanel from '../tools/OperationsPanel';
 
 const Nodes = ({ animationFrameDuration }) => {
 
-    const mousePressed = useSelector(({ mouse }) => mouse.mousePressed);
+    const [mousePressed, setMousePressed] = useState(false);
     const {
         nodes,
         columns,
@@ -25,12 +24,11 @@ const Nodes = ({ animationFrameDuration }) => {
     const dispatch = useDispatch();
 
     const changeNodeTypeIfPressed = (node, type) => {
-        if (!mousePressed) return false;
+        if (!mousePressed) return;
         changeNodeType(node, type);
-        return true;
     };
     const changeNodeType = (node, type) =>
-        dispatch(getNodeChangeAction(node.x, node.y, type));
+        canStartPathfinding && dispatch(getNodeChangeAction(node.x, node.y, type));
 
     let resultTimeout = useRef(null);
     const startPathfinding = () => {
@@ -53,7 +51,9 @@ const Nodes = ({ animationFrameDuration }) => {
 
     return (
         <>
-            <GridContainer fullscreen={fullscreen} columns={columns} rows={rows} onMouseDown={dispatch.bind(null, mousePress())} onMouseUp={dispatch.bind(null, mouseRelease())}>
+            <GridContainer fullscreen={fullscreen} columns={columns} rows={rows}
+                onMouseDown={() => canStartPathfinding ? setMousePressed(true) : alert('Clear grid first')}
+                onMouseUp={() => canStartPathfinding && setMousePressed(false)}>
                 {
                     nodes.flat().map(node =>
                         <Node
