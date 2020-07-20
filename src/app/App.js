@@ -14,7 +14,6 @@ function App() {
       <Nodes animationFrameDuration={20} />
       <OperationsPanel />
       <FullscreenButton />
-
     </Container>
   );
 }
