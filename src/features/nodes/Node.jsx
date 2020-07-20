@@ -20,11 +20,11 @@ const Square = styled.span.attrs(({ delay, x, y }) => ({
     ${props => nodeTypeStyle[props.type]}
 `;
 
-const Node = ({ animationFrameDuration, x, y, onMouseDown, onMouseOver }) => {
+const Node = ({ animationFrameTime, x, y, onMouseDown, onMouseOver }) => {
     const node = useSelector(({nodes}) => nodes.nodes[y][x]);
     return (
         <Square
-            delay={node.visitedIndex * animationFrameDuration}
+            delay={node.visitedIndex * animationFrameTime}
             type={node.type}
             x={node.x}
             y={node.y}

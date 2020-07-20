@@ -31,7 +31,6 @@ function initNodesState(cols, rows) {
         endNode,
         pathfinding: pathfindingState.ready,
         selectedDrawTool: NodeTypes.wall,
-        animationFrameDuration: 20
     };
 }
 

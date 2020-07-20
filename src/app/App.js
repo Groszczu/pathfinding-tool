@@ -11,7 +11,7 @@ function App() {
     <Container>
       <TitleHeader>Pathfinding tool</TitleHeader>
       <ToolBar />
-      <Nodes animationFrameDuration={20} />
+      <Nodes />
       <OperationsPanel />
       <FullscreenButton />
     </Container>

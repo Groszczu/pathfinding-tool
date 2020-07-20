@@ -12,11 +12,11 @@ const OperationsPanel = () => {
     const fullscreen = useSelector(({ tools }) => tools.fullscreen);
 
     const nodes = useSelector(({ nodes }) => nodes.nodes);
-    const animationFrameDuration = useSelector(({ nodes }) => nodes.animationFrameDuration);
     const state = useSelector(({ nodes }) => nodes.pathfinding);
+    const animationFrameTime = useSelector(({ tools }) => tools.animationFrameTime);
 
     const dispatch = useDispatch();
-    const [pathfinding, cancel] = usePathfinding(nodes, dijkstra, animationFrameDuration)
+    const [pathfinding, cancel] = usePathfinding(nodes, dijkstra, animationFrameTime)
     const startOnClick = () => pathfinding();
     const clearOnClick = () => { cancel(); dispatch(clearNodes()); };
     const resetOnClick = () => { cancel(); dispatch(resetNodes()); };

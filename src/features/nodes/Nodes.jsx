@@ -4,10 +4,13 @@ import GridContainer from '../../shared/GridContainer';
 import Node from './Node';
 import { draw } from './nodesSlice';
 
-const Nodes = ({ animationFrameDuration }) => {
+const Nodes = () => {
     const mousePressed = useRef(false);
+
     const columns = useSelector(({ nodes }) => nodes.columns);
     const rows = useSelector(({ nodes }) => nodes.rows);
+
+    const animationFrameTime = useSelector(({ tools }) => tools.animationFrameTime);
     const fullscreen = useSelector(({ tools }) => tools.fullscreen);
 
     const dispatch = useDispatch();
@@ -28,13 +31,14 @@ const Nodes = ({ animationFrameDuration }) => {
             {
                 rowsIndices.map(y =>
                     columnsIndices.map(x =>
-                        (<Node
+                        <Node
                             key={`${x}_${y}`}
                             x={x}
                             y={y}
-                            animationFrameDuration={animationFrameDuration}
+                            animationFrameTime={animationFrameTime}
                             onMouseDown={changeNodeType.bind(null, { x, y })}
-                            onMouseOver={changeNodeTypeIfPressed.bind(null, { x, y })} />)
+                            onMouseOver={changeNodeTypeIfPressed.bind(null, { x, y })}
+                        />
                     )
                 )
             }

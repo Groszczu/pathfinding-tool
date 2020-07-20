@@ -5,6 +5,7 @@ import Button from '../../shared/Button';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import FullscreenFlexContainer from '../../shared/FullscreenFlexContainer';
+import AnimationSpeedSlider from './AnimationSpeedSlider';
 
 const ToolBar = () => {
     const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const ToolBar = () => {
     const boundSetToolType = (toolType) => dispatch(changeSelectedTool(toolType));
 
     return (
-        <FullscreenFlexContainer fullscreen={fullscreen} top={0} right={'-1px'}>
+        <FullscreenFlexContainer fullscreen={fullscreen} top={0} right={'0.4em'}>
             {Array.from(toolTypes).map(type => <Button
                 key={type}
                 onClick={() => boundSetToolType(type)}
@@ -24,6 +25,7 @@ const ToolBar = () => {
                     maxWidth: '.75em',
                     margin: '.2em .4em',
                 }} />)}
+            <AnimationSpeedSlider vertical={fullscreen} />
         </FullscreenFlexContainer>
     );
 }
