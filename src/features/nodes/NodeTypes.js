@@ -10,26 +10,26 @@ const NodeTypes = {
   end: 'end_node'
 };
 
-export const changeableTypes = [
+export const changeableTypes = new Set([
   NodeTypes.empty,
   NodeTypes.wall,
   NodeTypes.visited,
   NodeTypes.result
-];
+]);
 
-export const toolTypes = [
+export const toolTypes = new Set([
   NodeTypes.empty,
   NodeTypes.wall,
   NodeTypes.start,
   NodeTypes.end
-];
+]);
 
 export function isChangeableType(type) {
-  return changeableTypes.includes(type);
+  return changeableTypes.has(type);
 };
 
 export function isToolType(type) {
-  return toolTypes.includes(type);
+  return toolTypes.has(type);
 } 
 
 export const nodeTypeColor = {

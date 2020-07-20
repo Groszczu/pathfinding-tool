@@ -1,6 +1,6 @@
 import React from 'react';
 import { toolTypes, nodeTypeColor } from '../nodes/NodeTypes';
-import { setToolType } from './toolsSlice';
+import { changeSelectedTool } from '../nodes/nodesSlice';
 import Button from '../../shared/Button';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -8,14 +8,14 @@ import FullscreenFlexContainer from '../../shared/FullscreenFlexContainer';
 
 const ToolBar = () => {
     const dispatch = useDispatch();
-    const selected = useSelector(({ tools }) => tools.toolType);
+    const selected = useSelector(({ nodes }) => nodes.selectedDrawTool);
     const fullscreen = useSelector(({ tools }) => tools.fullscreen);
 
-    const boundSetToolType = (toolType) => dispatch(setToolType(toolType));
+    const boundSetToolType = (toolType) => dispatch(changeSelectedTool(toolType));
 
     return (
         <FullscreenFlexContainer fullscreen={fullscreen} top={0} right={'-1px'}>
-            {toolTypes.map(type => <Button
+            {Array.from(toolTypes).map(type => <Button
                 key={type}
                 onClick={() => boundSetToolType(type)}
                 selected={type === selected}

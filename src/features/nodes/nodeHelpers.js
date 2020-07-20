@@ -1,5 +1,4 @@
 import NodeTypes, { isChangeableType } from './NodeTypes';
-import { setNodeType, setStartNode, setEndNode } from "./nodesSlice";
 
 export function createEmptyNodes(cols, rows) {
   return Array(rows).fill(0).map((_, row) =>
@@ -23,31 +22,14 @@ export function neighbors(node1, node2) {
   return xDistance + yDistance === 1;
 }
 
-export function validateNodeTypeChange(node, startNode, endNode, newType) {
-    return validateNodeChange(node, startNode, endNode) && isChangeableType(newType);
+export function validateNodeTypeChange(node, newType) {
+  return validateNodeChange(node) && isChangeableType(newType);
 
 }
-export function validateNodeChange(node, startNode, endNode) {
-    return !areEqual(node, startNode) 
-        && !areEqual(node, endNode);
+export function validateNodeChange(node) {
+  return !node.type === NodeTypes.start && !node.type === NodeTypes.end;
 }
 
-export function getNodeChangeAction(x, y, type) {
-  let action;
-  switch (type) {
-    case NodeTypes.empty:
-    case NodeTypes.wall:
-    case NodeTypes.visited:
-    case NodeTypes.result:
-      action = setNodeType({ x, y, type });
-      break;
-    case NodeTypes.start:
-      action = setStartNode({ x, y });
-      break;
-    case NodeTypes.end:
-      action = setEndNode({ x, y });
-      break;
-    default: break;
-  }
-  return action;
-};
+export function isStartOrEndNode(node, startNode, endNode) {
+  return areEqual(node, startNode) || areEqual(node, endNode);
+}
