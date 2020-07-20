@@ -1,102 +1,175 @@
 import { createSlice } from '@reduxjs/toolkit';
-import NodeTypes, { isToolType } from "./NodeTypes";
-import { createEmptyNodes, validateNodeChange, validateNodeTypeChange, createNode } from './nodeHelpers';
+import { createEmptyNodes, isStartOrEndNode } from './nodeHelpers';
+import NodeTypes, { isToolType } from './NodeTypes';
 
 
 // Default state
 const COLS = 40;
 const ROWS = 30;
 
+export const pathfindingState = {
+    ready: 'ready',
+    running: 'running',
+    done: 'done'
+};
+
 function initNodesState(cols, rows) {
     const nodes = createEmptyNodes(cols, rows);
-    const middleNodeY = Math.floor(nodes.length / 2);
-    const middleNodeX = Math.floor(nodes[0].length / 2);
+    const middleY = Math.floor(nodes.length / 2);
+    const middleX = Math.floor(nodes[0].length / 2);
 
-    const startNode = nodes[middleNodeY][middleNodeX];
-    const endNode = nodes[Math.floor(middleNodeY / 2)][middleNodeX];
-    startNode.type = NodeTypes.start;
-    endNode.type = NodeTypes.end;
+    const startNode = { y: middleY, x: middleX };
+    const endNode = { y: Math.floor(middleY / 2), x: middleX };
+    nodes[startNode.y][startNode.x].type = NodeTypes.start;
+    nodes[endNode.y][endNode.x].type = NodeTypes.end;
 
     return {
         columns: cols,
         rows,
         nodes,
-        canStartPathfinding: true,
         startNode,
-        endNode
+        endNode,
+        pathfinding: pathfindingState.ready,
+        selectedDrawTool: NodeTypes.wall,
+        animationFrameDuration: 20
     };
 }
 
 const defaultState = initNodesState(COLS, ROWS);
 
 const nodesSlice = createSlice({
-    name: 'nodes',
+    name: 'nodesMetadata',
     initialState: defaultState,
     reducers: {
-        setNodeType: (state, { payload }) => {
-            const { x, y, type } = payload;
-            const { startNode, endNode } = state;
-            if (validateNodeTypeChange(payload, startNode, endNode, type)) {
-                state.nodes[y][x] = createNode(x, y, type);
+        changeColumns: (state, { payload }) => { state.columns = payload; },
+        changeRows: (state, { payload }) => { state.rows = payload; },
+        startPathfinding: (state) => {
+            if (state.pathfinding === pathfindingState.ready) {
+                state.pathfinding = pathfindingState.running;
             }
         },
-        setNodesType: (state, { payload }) => {
-            const { nodes, type } = payload;
-            const { startNode, endNode } = state;
-            for (const [i, node] of nodes.entries()) {
-                if (validateNodeTypeChange(node, startNode, endNode, type)) {
-                    const { x, y } = node;
-                    state.nodes[y][x] = createNode(x, y, type);
-                    if (payload.withIndex) state.nodes[y][x].visitedIndex = i;
-                }
+        setNodesType: (state, action) => {
+            switch (state.pathfinding) {
+                case pathfindingState.ready: setNodesTypeReady(state, action); break;
+                case pathfindingState.running: setNodesTypeRunning(state, action); break;
+                case pathfindingState.done: break;
+                default: break;
             }
         },
-        setVisited: (state, { payload }) => {
-            const { nodes } = payload;
-            const { startNode, endNode } = state;
-            for (const node of nodes) {
-                if (validateNodeChange(node, startNode, endNode)) {
-                    const stateNode = state.nodes[node.y][node.x];
-                    stateNode.visitedIndex = node.visitedIndex;
-                    stateNode.type = NodeTypes.visited;
-                }
+        changeSelectedTool: (state, { payload }) => {
+            const toolType = payload;
+            if (!isToolType(toolType)) {
+                return;
             }
-            state.canStartPathfinding = false;
+            state.selectedDrawTool = toolType;
         },
-        setStartNode: (state, { payload }) => {
-            const { x, y } = payload;
-            const { startNode: oldStartNode, endNode } = state;
-            if (validateNodeChange(payload, oldStartNode, endNode)) {
-                state.nodes[oldStartNode.y][oldStartNode.x] = createNode(oldStartNode.x, oldStartNode.y);
-
-                const newStartNode = createNode(x, y, NodeTypes.start);
-                state.startNode = newStartNode;
-                state.nodes[y][x] = newStartNode;
+        draw: (state, action) => {
+            if (state.pathfinding !== pathfindingState.ready) {
+                return;
             }
-        },
-        setEndNode: (state, { payload }) => {
-            const { x, y } = payload;
-            const { startNode, endNode: oldEndNode } = state;
-            if (validateNodeChange(payload, startNode, oldEndNode)) {
-                state.nodes[oldEndNode.y][oldEndNode.x] = createNode(oldEndNode.x, oldEndNode.y);
-
-                const newEndNode = createNode(x, y, NodeTypes.end);
-                state.endNode = newEndNode;
-                state.nodes[y][x] = newEndNode;
-            }
+            action.payload.type = state.selectedDrawTool;
+            setNodesTypeReady(state, action);
         },
         clearNodes: (state) => {
-            state.nodes.forEach(row => row.forEach(node => {
-                if (!isToolType(node.type))
+            const { nodes } = state;
+            nodes.forEach(row => row.forEach(node => {
+                if (!isToolType(node.type)) {
                     node.type = NodeTypes.empty;
+                }
                 node.visitedIndex = null;
             }));
-            state.canStartPathfinding = true;
+            state.pathfinding = pathfindingState.ready;
         },
         resetNodes: () => defaultState
     }
 });
 
 const { actions, reducer } = nodesSlice;
-export const { setNodeType, setNodesType, setStartNode, setEndNode, clearNodes, resetNodes, setVisited } = actions;
+export const {
+    changeColumns,
+    changeRows,
+    startPathfinding,
+    setNodesType,
+    changeSelectedTool,
+    draw,
+    clearNodes,
+    resetNodes,
+} = actions;
 export default reducer;
+
+
+function setNodesTypeReady(state, { payload }) {
+    const { nodes, type } = payload;
+    const { startNode, endNode } = state;
+
+    switch (type) {
+        case NodeTypes.start:
+        case NodeTypes.end: {
+            // there can only be one start and one end node
+            if (nodes.length !== 1) {
+                return;
+            }
+
+            const node = nodes[0];
+            if (isStartOrEndNode(node, startNode, endNode)) {
+                return;
+            }
+
+            const changedNode = type === NodeTypes.start ? startNode : endNode;
+
+            const { x: oldX, y: oldY } = changedNode;
+            state.nodes[oldY][oldX].type = NodeTypes.empty;
+
+            const { x: newX, y: newY } = node;
+
+            changedNode.x = newX;
+            changedNode.y = newY;
+            state.nodes[newY][newX].type = type;
+            break;
+        }
+        case NodeTypes.empty:
+        case NodeTypes.wall: {
+            const { nodes: stateNodes } = state;
+            nodes.forEach(node => {
+                if (isStartOrEndNode(node, startNode, endNode)) {
+                    return;
+                }
+                stateNodes[node.y][node.x].type = type;
+            });
+            break;
+        }
+        default: break;
+    }
+}
+
+function setNodesTypeRunning(state, { payload }) {
+    const { nodes, type } = payload;
+    const { startNode, endNode } = state;
+
+    switch (type) {
+        case NodeTypes.visited: {
+            nodes.forEach(node => {
+                if (isStartOrEndNode(node, startNode, endNode)) {
+                    return;
+                }
+                const stateNode = state.nodes[node.y][node.x];
+                stateNode.type = NodeTypes.visited;
+                stateNode.visitedIndex = node.visitedIndex;
+            });
+            break;
+        }
+        case NodeTypes.result: {
+            nodes.forEach((node, i) => {
+                if (isStartOrEndNode(node, startNode, endNode)) {
+                    return;
+                }
+                const stateNode = state.nodes[node.y][node.x];
+                stateNode.type = NodeTypes.result;
+                stateNode.visitedIndex = i;
+            });
+            state.pathfinding = pathfindingState.done;
+            break;
+        }
+        default: break;
+    }
+}

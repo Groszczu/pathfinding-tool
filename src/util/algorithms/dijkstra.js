@@ -21,7 +21,7 @@ export default function dijkstra(nodes) {
     // if lowest distance from start node in unvisited array equals Infinity
     // it means there is no path from start to end, so we can end searching
     if (currentNode.distance === Infinity) {
-      return { visited, result: null, moves: i };
+      return { visited, result: null };
     }
 
     unvisited.shift(); //remove current node
@@ -48,5 +48,5 @@ export default function dijkstra(nodes) {
     result.push(node);
   }
 
-  return { visited, result, moves: i };
+  return { visited, result };
 }

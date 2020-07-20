@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import { nodeTypeStyle } from './NodeTypes';
 
 const Square = styled.span.attrs(({ delay, x, y }) => ({
@@ -19,8 +20,8 @@ const Square = styled.span.attrs(({ delay, x, y }) => ({
     ${props => nodeTypeStyle[props.type]}
 `;
 
-const Node = ({ node, animationFrameDuration, onMouseDown, onMouseOver }) => {
-
+const Node = ({ animationFrameDuration, x, y, onMouseDown, onMouseOver }) => {
+    const node = useSelector(({nodes}) => nodes.nodes[y][x]);
     return (
         <Square
             delay={node.visitedIndex * animationFrameDuration}

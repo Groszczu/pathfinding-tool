@@ -1,12 +1,30 @@
 import React from 'react';
 import Button from '../../shared/Button';
 import FullscreenFlexContainer from '../../shared/FullscreenFlexContainer';
+import { clearNodes, resetNodes } from '../nodes/nodesSlice';
+import usePathfinding from '../nodes/usePathfinding';
+import dijkstra from '../../util/algorithms/dijkstra';
+import { useDispatch } from 'react-redux';
+import { pathfindingState } from '../nodes/nodesSlice';
+import { useSelector } from 'react-redux';
 
-const OperationsPanel = ({ fullscreen, canStart, startOnClick, clearOnClick, resetOnClick }) => {
+const OperationsPanel = () => {
+    const fullscreen = useSelector(({ tools }) => tools.fullscreen);
+
+    const nodes = useSelector(({ nodes }) => nodes.nodes);
+    const animationFrameDuration = useSelector(({ nodes }) => nodes.animationFrameDuration);
+    const state = useSelector(({ nodes }) => nodes.pathfinding);
+
+    const dispatch = useDispatch();
+    const [pathfinding, cancel] = usePathfinding(nodes, dijkstra, animationFrameDuration)
+    const startOnClick = () => pathfinding();
+    const clearOnClick = () => { cancel(); dispatch(clearNodes()); };
+    const resetOnClick = () => { cancel(); dispatch(resetNodes()); };
+
     let onClick;
     let text;
     let primary = false;
-    if (canStart) {
+    if (state === pathfindingState.ready) {
         onClick = startOnClick;
         text = 'Start';
     } else {
@@ -20,7 +38,6 @@ const OperationsPanel = ({ fullscreen, canStart, startOnClick, clearOnClick, res
             <Button onClick={onClick} primary={primary}>{text}</Button>
             <Button onClick={resetOnClick} primary={true}>Reset</Button>
         </FullscreenFlexContainer>
-
     );
 };
 
