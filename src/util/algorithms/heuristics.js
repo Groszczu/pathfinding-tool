@@ -54,30 +54,28 @@ export const aStartHeuristic = {
 
 export const greedyHeuristic = {
     comparer: (a, b) => {
-       return (a.distanceFromStart === Infinity ? Infinity : 1) * a.distanceToEnd - 
-       (b.distanceFromStart === Infinity ? Infinity : 1) * b.distanceToEnd;
+        const aMetric = a.visited ? a.distanceToEnd : Number.MAX_SAFE_INTEGER;
+        const bMetric = b.visited ? b.distanceToEnd : Number.MAX_SAFE_INTEGER;
+        return aMetric - bMetric;
     },
     addHeuristics: (nodes, startNode, endNode) => nodes.map(node => {
         const isStartNode = node.type === NodeTypes.start;
-        const distanceFromStart = isStartNode ? 0 : Infinity;
         const distanceToEnd = Math.ceil(distance(node, endNode));
         return {
             ...node,
-            distanceFromStart,
             distanceToEnd,
+            visited: isStartNode,
             previousNode: null
         }
     }),
     map: (currentNode, testedNode) => {
-        const calculatedDistanceFromStart = currentNode.distanceFromStart + 1;
-        return neighbors(currentNode, testedNode) ?
-            {
+        return neighbors(currentNode, testedNode)
+            ? {
                 ...testedNode,
-                distanceFromStart: Math.min(testedNode.distanceFromStart, calculatedDistanceFromStart),
-                previousNode: testedNode.distanceFromStart > calculatedDistanceFromStart ? currentNode : testedNode.previousNode
+                visited: true,
+                previousNode: currentNode
             }
-            :
-            testedNode;
+            : testedNode;
     },
-    endCondition: (currentNode) => currentNode.distanceFromStart === Infinity
+    endCondition: (currentNode) => !currentNode.visited
 }
