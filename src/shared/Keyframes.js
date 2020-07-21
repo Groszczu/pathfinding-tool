@@ -13,15 +13,19 @@ export const scaleKeyframe = keyframes`
 
 export const visitedNodeKeyframe = keyframes`
   0% {
-    background-color: var(--visit-progress-clr);
-    transform: scale(1.4, 1.4);
+    background-color: var(--visited-start-clr);
+    transform: scale(0.4, 0.4);
     border-radius: 100%;
+    z-index: 2;
+  }
+  50% {
+    background-color: var(--visited-progress-clr);
+    transform: scale(1, 1);
+    border-radius: 0;
     z-index: 2;
   }
   100% {
     background-color: var(--visited-node-clr);
-    transform: scale(1, 1);
-    border-radius: 0;
     z-index: 0;
   }
 `;

@@ -33,3 +33,7 @@ export function validateNodeChange(node) {
 export function isStartOrEndNode(node, startNode, endNode) {
   return areEqual(node, startNode) || areEqual(node, endNode);
 }
+
+export function distance(a, b) {
+  return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+}

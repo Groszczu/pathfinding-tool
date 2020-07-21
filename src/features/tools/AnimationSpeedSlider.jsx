@@ -4,15 +4,10 @@ import { useDispatch } from 'react-redux';
 import { changeAnimationFrameTime } from './toolsSlice';
 import { pathfindingState } from '../nodes/nodesSlice';
 import Slider from '../../shared/Slider';
-import styled from 'styled-components';
+import Label from '../../shared/Label';
+import InlineFlex from '../../shared/InlineFlex';
 
-const InlineFlex = styled.span`
-    display: inline-flex;
-    flex-direction: ${props => props.direction};
-    justify-content: center;
-`;
-
-const AnimationSpeedSlider = ({ vertical }) => {
+const AnimationSpeedSlider = () => {
     const animationFrameTime = useSelector(({ tools }) => tools.animationFrameTime);
     const state = useSelector(({ nodes }) => nodes.pathfinding);
     const dispatch = useDispatch();
@@ -29,13 +24,13 @@ const AnimationSpeedSlider = ({ vertical }) => {
     }
 
     return (
-        <InlineFlex direction={vertical ? 'row' : 'column'}>
-            <p style={{writingMode: vertical && 'vertical-rl', textOrientation: 'sideways'}}>Animation: {inputRef.current?.value || animationFrameTime}ms</p>
+        <InlineFlex direction='column'>
+            <Label>Animation: {inputRef.current?.value || animationFrameTime}ms</Label>
             <Slider
                 ref={inputRef}
-                vertical={vertical}
                 disabled={state !== pathfindingState.ready}
                 defaultValue={animationFrameTime}
+                width={'70%'}
                 min={0}
                 max={250}
                 step={10}

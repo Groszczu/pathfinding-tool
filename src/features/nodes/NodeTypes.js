@@ -48,7 +48,7 @@ export const nodeTypeStyle = {
     animation: ${scaleKeyframe} .2s linear;`,
   [NodeTypes.visited]: css`
     background: ${nodeTypeColor[NodeTypes.visited]};
-    animation: ${visitedNodeKeyframe} .3s linear;`,
+    animation: ${visitedNodeKeyframe} 1.4s linear;`,
   [NodeTypes.result]: css`
     background: ${nodeTypeColor[NodeTypes.result]};
     animation: ${scaleKeyframe} .3s linear;

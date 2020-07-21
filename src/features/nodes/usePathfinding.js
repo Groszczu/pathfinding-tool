@@ -3,13 +3,13 @@ import { useDispatch } from "react-redux";
 import NodeTypes from "./NodeTypes";
 import { setNodesType, startPathfinding } from "./nodesSlice";
 
-const usePathfinding = (nodes, algorithm, animationFrameTime) => {
+const usePathfinding = (nodes, startNode, endNode, algorithm, animationFrameTime) => {
     const dispatch = useDispatch();
     const resultTimeout = useRef(null);
 
     const pathfinding = useCallback(() => {
         dispatch(startPathfinding());
-        const { visited, result } = algorithm(nodes);
+        const { visited, result } = algorithm(nodes, startNode, endNode);
         visited && dispatch(setNodesType({ nodes: visited, type: NodeTypes.visited }));
         if (result) {
             resultTimeout.current = setTimeout(() =>
@@ -20,7 +20,7 @@ const usePathfinding = (nodes, algorithm, animationFrameTime) => {
                 )
                 , animationFrameTime * visited.length);
         }
-    }, [algorithm, nodes, animationFrameTime, dispatch]);
+    }, [algorithm, nodes, startNode, endNode, animationFrameTime, dispatch]);
 
     const cancel = useCallback(() => clearTimeout(resultTimeout.current), [resultTimeout]);
 

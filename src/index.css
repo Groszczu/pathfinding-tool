@@ -1,9 +1,9 @@
 html {
   --text-clr: var(--secondary-clr);
-  --light-txt-clr: #ffeadb;
+  --light-text-clr: #ffeadb;
   --primary-clr: #ff4301;
   --background-clr: #4a3f35;
-  --background-clr: #5c5045;
+  --light-background-clr: #7a6958;
   --secondary-clr: #fa7d09;
 
   --empty-node-clr: #ffeadb;
@@ -11,7 +11,8 @@ html {
   --start-node-clr: #3cc200;
   --end-node-clr: #ff0000;
   --visited-node-clr: #00a7e9;
-  --visit-progress-clr: #79ff7f;
+  --visited-progress-clr: #79ff7f;
+  --visited-start-clr: #c300ff;
   --result-node-clr: #f7bd00;
 }
 

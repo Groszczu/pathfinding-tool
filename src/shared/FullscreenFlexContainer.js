@@ -2,11 +2,13 @@ import styled, { css } from 'styled-components';
 
 const FullscreenFlexContainer = styled.div`
     display: flex;
+    flex-wrap: wrap;
     font-size: 1.2rem;
     padding: .4em;
-    color: var(--light-txt-clr);
+    margin: .8em 0;
+    color: var(--light-text-clr);
     border-radius: 10px;
-    background-color: #5c5045;
+    background-color: var(--light-background-clr);
     border: 3px solid black;
 
     justify-content: center;
@@ -25,7 +27,8 @@ const FullscreenFlexContainer = styled.div`
                                 right: ${props.right};
                                 left: ${props.left};
                                 bottom: ${props.bottom};
-                                z-index: 2;`
+                                z-index: 2;
+                                margin: .4rem;`
     }
 `;
 

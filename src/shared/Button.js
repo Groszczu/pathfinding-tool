@@ -4,11 +4,11 @@ const Button = styled.button`
   border-radius: 10px;
   background-color: ${props => props.primary ? 'var(--primary-clr)' : 'var(--secondary-clr)'};
   font-size: 1.5rem;
-  color: var(--light-txt-clr);
+  color: var(--light-text-clr);
   padding: ${props => props.children ? '.5em .75em' : '.75em'};
   text-align: center;
   max-width: 100px;
-  margin: 2% auto 0 auto;
+  margin: .4rem;
   border: 2px solid black;
   cursor: pointer;
   opacity: 0.6;
