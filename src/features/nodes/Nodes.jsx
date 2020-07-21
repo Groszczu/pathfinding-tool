@@ -2,10 +2,12 @@ import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import GridContainer from '../../shared/GridContainer';
 import Node from './Node';
-import { draw } from './nodesSlice';
+import { draw, changeSelectedTool, changeToPreviousTool } from './nodesSlice';
+import NodeTypes from './NodeTypes';
 
 const Nodes = () => {
     const mousePressed = useRef(false);
+    const dragging = useRef(false);
 
     const columns = useSelector(({ nodes }) => nodes.columns);
     const rows = useSelector(({ nodes }) => nodes.rows);
@@ -19,15 +21,42 @@ const Nodes = () => {
         if (!mousePressed.current) return;
         changeNodeType(node);
     };
-    const changeNodeType = (node) =>
+    const changeNodeType = (node) => {
+        if (node.type === NodeTypes.start || node.type === NodeTypes.end) {
+            dispatch(changeSelectedTool(node.type));
+            dragging.current = true;
+        }
         dispatch(draw({ nodes: [node] }));
+    }
 
+    const handleMouseDown = (e) => {
+        // right click
+        if (e.button === 2) {
+            dispatch(changeSelectedTool(NodeTypes.empty));
+        }
+        mousePressed.current = true;
+    };
+    const handleMouseUp = (e) => {
+        mousePressed.current = false;
+        switch (e.button) {
+            case 0: //left click
+                dragging.current && dispatch(changeToPreviousTool());
+                dragging.current = false;
+                break;
+            case 2: //right click
+                dispatch(changeToPreviousTool());
+                break
+            default: break;
+        }
+    }
     const rowsIndices = [...Array(rows).keys()];
     const columnsIndices = [...Array(columns).keys()];
     return (
         <GridContainer fullscreen={fullscreen} columns={columns} rows={rows}
-            onMouseDown={() => mousePressed.current = true}
-            onMouseUp={() => mousePressed.current = false}>
+            onMouseDownCapture={handleMouseDown}
+            onMouseUp={handleMouseUp}
+            onContextMenu={(e) => e.preventDefault()}
+        >
             {
                 rowsIndices.map(y =>
                     columnsIndices.map(x =>
@@ -36,8 +65,8 @@ const Nodes = () => {
                             x={x}
                             y={y}
                             animationFrameTime={animationFrameTime}
-                            onMouseDown={changeNodeType.bind(null, { x, y })}
-                            onMouseOver={changeNodeTypeIfPressed.bind(null, { x, y })}
+                            onMouseDown={changeNodeType}
+                            onMouseOver={changeNodeTypeIfPressed}
                         />
                     )
                 )

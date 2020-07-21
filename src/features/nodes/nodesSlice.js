@@ -31,6 +31,7 @@ function initNodesState(cols, rows) {
         endNode,
         pathfinding: pathfindingState.ready,
         selectedDrawTool: NodeTypes.wall,
+        previousDrawTool: null
     };
 }
 
@@ -60,7 +61,11 @@ const nodesSlice = createSlice({
             if (!isToolType(toolType)) {
                 return;
             }
+            state.previousDrawTool = state.selectedDrawTool;
             state.selectedDrawTool = toolType;
+        },
+        changeToPreviousTool: (state) => {
+            state.selectedDrawTool = state.previousDrawTool;
         },
         draw: (state, action) => {
             if (state.pathfinding !== pathfindingState.ready) {
@@ -90,6 +95,7 @@ export const {
     startPathfinding,
     setNodesType,
     changeSelectedTool,
+    changeToPreviousTool,
     draw,
     clearNodes,
     resetNodes,

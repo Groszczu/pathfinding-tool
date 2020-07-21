@@ -28,8 +28,8 @@ const Node = ({ animationFrameTime, x, y, onMouseDown, onMouseOver }) => {
             type={node.type}
             x={node.x}
             y={node.y}
-            onMouseDown={onMouseDown}
-            onMouseOver={onMouseOver}
+            onMouseDown={() => onMouseDown(node)}
+            onMouseOver={() => onMouseOver(node)}
         />
     );
 };
