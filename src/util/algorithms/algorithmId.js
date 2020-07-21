@@ -1,24 +1,19 @@
 import aStar from "./aStar";
 import dijkstra from "./dijkstra";
+import greedy from "./greedy";
 
 const algorithmId = {
-    dijkstra: 'dijkstra',
-    aStar: 'aStar'
+    dijkstra: 'Dijkstra\'s',
+    aStar: 'A*',
+    greedy: 'Greedy'
 };
 
 export function mapAlgorithmIdToFunc(id) {
     switch (id) {
         case algorithmId.dijkstra: return dijkstra;
         case algorithmId.aStar: return aStar;
+        case algorithmId.greedy: return greedy;
         default: return;
-    }
-}
-
-export function mapAlgorithmIdToTitle(id) {
-    switch (id) {
-        case algorithmId.dijkstra: return 'Dijkstra';
-        case algorithmId.aStar: return 'A*';
-        default: return '';
     }
 }
 

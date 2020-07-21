@@ -32,7 +32,10 @@ export function basicAStar(nodes, startNode, endNode, heuristic) {
 
     const result = [];
     const endNodeData = visited.find(n => n.type === NodeTypes.end);
-    for (let node = endNodeData.previousNode; node.type !== NodeTypes.start; node = node.previousNode) {
+    for (let node = endNodeData.previousNode; node?.type !== NodeTypes.start; node = node.previousNode) {
+        if (!node) {
+            return { visited, result };
+        }
         result.push(node);
     }
 

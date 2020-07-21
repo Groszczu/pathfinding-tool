@@ -22,6 +22,7 @@ const ToolBar = () => {
         <FullscreenFlexContainer
             fullscreen={fullscreen}
             top={0} right={0}
+            zIndex={100}
             onMouseEnter={fullscreen ? () => setHovered(true) : null}
             onMouseLeave={fullscreen ? () => setHovered(false) : null}
             onFocus={fullscreen ? () => setFocused(true) : null}
@@ -36,7 +37,7 @@ const ToolBar = () => {
                         style={{
                             backgroundColor: nodeTypeColor[type],
                             maxWidth: '.75em',
-                            margin: '.2em .4em',
+                            margin: '.2em',
                         }} />)}
                     <AnimationSpeedSlider />
                     <AlgorithmPicker />

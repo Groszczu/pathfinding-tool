@@ -16,30 +16,24 @@ const OperationsPanel = () => {
     const endNode = useSelector(({ nodes }) => nodes.endNode);
     const state = useSelector(({ nodes }) => nodes.pathfinding);
     const algorithmId = useSelector(({ tools }) => tools.pathfindingAlgorithm);
-    const algorithm = mapAlgorithmIdToFunc(algorithmId);
     const animationFrameTime = useSelector(({ tools }) => tools.animationFrameTime);
 
     const dispatch = useDispatch();
+
+    const algorithm = mapAlgorithmIdToFunc(algorithmId);
     const [pathfinding, cancel] = usePathfinding(nodes, startNode, endNode, algorithm, animationFrameTime)
+
     const startOnClick = () => pathfinding();
     const clearOnClick = () => { cancel(); dispatch(clearNodes()); };
     const resetOnClick = () => { cancel(); dispatch(resetNodes()); };
 
-    let onClick;
-    let text;
-    let primary = false;
-    if (state === pathfindingState.ready) {
-        onClick = startOnClick;
-        text = 'Start';
-    } else {
-        onClick = clearOnClick;
-        text = 'Clear';
-        primary = true;
-    }
-
     return (
-        <FullscreenFlexContainer fullscreen={fullscreen} bottom={0} right={0}>
-            <Button onClick={onClick} primary={primary}>{text}</Button>
+        <FullscreenFlexContainer fullscreen={fullscreen} bottom={0} right={0} zIndex={99}>
+            {
+                state === pathfindingState.ready
+                    ? <Button onClick={startOnClick} primary={false}>Start</Button>
+                    : <Button onClick={clearOnClick} primary={true}>Clear</Button>
+            }
             <Button onClick={resetOnClick} primary={true}>Reset</Button>
         </FullscreenFlexContainer>
     );

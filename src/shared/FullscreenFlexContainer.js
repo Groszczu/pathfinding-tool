@@ -27,7 +27,7 @@ const FullscreenFlexContainer = styled.div`
                                 right: ${props.right};
                                 left: ${props.left};
                                 bottom: ${props.bottom};
-                                z-index: 2;
+                                z-index: ${props.zIndex};
                                 margin: .4rem;`
     }
 `;
