@@ -6,6 +6,7 @@ This project was created to learn how to use Redux, Redux Toolkit and React-Redu
   Used algorithms:
   - Dijkstra's algorithm (weight of all nodes are equal to 1)
   - A* algorithm
+  - Greedy algorithm (priorities nodes closest to the end node, doesn't use distance from start in calculations)
   ### User interface
   #### Toolbar
   By selecting suitable button from the toolbar you can change node to one of the following type:
