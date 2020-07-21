@@ -25,7 +25,6 @@ const AnimationSpeedSlider = () => {
     const handleBlur = () => {
         internalAnimationTime !== animationFrameTime && dispatch(changeAnimationFrameTime(internalAnimationTime))
     }
-    
 
     const isReady = state === pathfindingState.ready;
     return (
@@ -37,7 +36,6 @@ const AnimationSpeedSlider = () => {
                 min={0}
                 max={250}
                 step={10}
-                style={{ maxWidth: '100%' }}
                 onChange={handleChange}
                 onBlur={handleBlur}
             />

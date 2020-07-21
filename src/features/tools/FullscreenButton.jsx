@@ -8,7 +8,12 @@ const FullscreenButton = () => {
     const dispatch = useDispatch();
     const fullscreen = useSelector(({ tools }) => tools.fullscreen);
 
-    const boundToggleFullscreen = () => dispatch(toggleFullscreen());
+    const boundToggleFullscreen = () => { 
+        !fullscreen
+            ? document.querySelector('body').requestFullscreen()
+            : document.fullscreen && document.exitFullscreen();
+        dispatch(toggleFullscreen());
+    }
 
     return (
         <Button onClick={boundToggleFullscreen}
