@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { changeAnimationFrameTime } from './toolsSlice';
@@ -6,35 +6,40 @@ import { pathfindingState } from '../nodes/nodesSlice';
 import Slider from '../../shared/Slider';
 import Label from '../../shared/Label';
 import InlineFlex from '../../shared/InlineFlex';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const AnimationSpeedSlider = () => {
     const animationFrameTime = useSelector(({ tools }) => tools.animationFrameTime);
     const state = useSelector(({ nodes }) => nodes.pathfinding);
     const dispatch = useDispatch();
+    const [internalAnimationTime, setInternalAnimationTime] = useState(animationFrameTime);
 
-    const timeoutRef = useRef(null);
-    const inputRef = useRef(null);
+    useEffect(() => {
+        setInternalAnimationTime(animationFrameTime);
+    }, [animationFrameTime]);
 
-    const handleChange = () => {
-        clearTimeout(timeoutRef.current);
-
-        timeoutRef.current = setTimeout(() => {
-            dispatch(changeAnimationFrameTime(inputRef.current.value))
-        }, 500);
+    const handleChange = (e) => {
+        setInternalAnimationTime(e.target.value);
     }
+    const handleBlur = () => {
+        internalAnimationTime !== animationFrameTime && dispatch(changeAnimationFrameTime(internalAnimationTime))
+    }
+    
 
+    const isReady = state === pathfindingState.ready;
     return (
         <InlineFlex direction='column'>
-            <Label>Animation: {inputRef.current?.value || animationFrameTime}ms</Label>
+            <Label>Animation: {internalAnimationTime}ms</Label>
             <Slider
-                ref={inputRef}
-                disabled={state !== pathfindingState.ready}
-                defaultValue={animationFrameTime}
-                width={'70%'}
+                value={internalAnimationTime}
+                disabled={!isReady}
                 min={0}
                 max={250}
                 step={10}
+                style={{ maxWidth: '100%' }}
                 onChange={handleChange}
+                onBlur={handleBlur}
             />
         </InlineFlex>
     );
