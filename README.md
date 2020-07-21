@@ -5,7 +5,7 @@ This project was created to learn how to use Redux, Redux Toolkit and React-Redu
   ### Pathfinding algorithms
   Used algorithms:
   - Dijkstra's algorithm (weight of all nodes are equal to 1)
-  - A* algorithm (in production)
+  - A* algorithm
   ### User interface
   #### Toolbar
   By selecting suitable button from the toolbar you can change node to one of the following type:
