@@ -4,7 +4,7 @@ const FullscreenFlexContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
     flex: 1 1 300px;
-    font-size: clamp(1.4rem, 3.25vmin, 2.2rem);
+    font-size: var(--clamped-font-size);
     padding: .4em;
     margin: .8em 0;
     color: var(--light-text-clr);

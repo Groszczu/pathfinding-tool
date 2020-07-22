@@ -3,7 +3,8 @@ import styled from 'styled-components';
 const Slider = styled.input.attrs(() => ({
   type: 'range',
 }))`
-  width: 100%;
+  width: 90%;
+  padding: .4em;
 `;
 
 export default Slider;
