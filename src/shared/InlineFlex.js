@@ -7,7 +7,7 @@ const InlineFlex = styled.span`
     align-items: center;
     max-width: 450px;
     max-hight: 100%;
-    font-size: clamp(1.4rem, 3.8vmin, 4rem);
+    font-size: var(--clamped-font-size);
     flex: 1 1 60px;
 `;
 

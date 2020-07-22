@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 const Button = styled.button`
   border-radius: 10px;
   background-color: ${props => props.primary ? 'var(--primary-clr)' : 'var(--secondary-clr)'};
-  font-size: clamp(1.4rem, 3.8vmin, 4rem);
+  font-size: var(--clamped-font-size);
   color: var(--light-text-clr);
   padding: ${props => props.children ? '.5em .75em' : '.75em'};
   text-align: center;

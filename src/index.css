@@ -14,6 +14,8 @@ html {
   --visited-progress-clr: #79ff7f;
   --visited-start-clr: #c300ff;
   --result-node-clr: #f7bd00;
+
+  --clamped-font-size: clamp(1.4rem, 3.25vmin, 2.2rem);
 }
 
 *, *::before, *::after {
