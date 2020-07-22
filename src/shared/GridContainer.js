@@ -1,54 +1,62 @@
+import React from 'react';
 import styled, { css } from 'styled-components';
 
 const GridContainer = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(22px, 1fr));
-    grid-template-rows: repeat(auto-fill, minmax(22px, 1fr));
+    grid-template-columns: repeat(${props => props.columns}, calc(100% / ${props => props.columns}));
+    grid-template-rows: repeat(${props => props.rows}, calc(100% / ${props => props.rows}));
     justify-content: center;
+    position: absolute;
+    top: 0;
 
     margin: 0 auto;
-    padding: 10px;
-    overflow: auto;
-    background: var(--empty-node-clr);
-    border-radius: 10px;
-    border: 3px solid black;
     user-select: none;
 
     z-index: 1;
+    width: 100%;
+    height: 100%;
+`;
 
-    ${
-    props => props.columns &&
-        css`grid-template-columns: repeat(${props.columns}, 25px);`
-    }
+const GridWrapper = styled.div`
+  position: relative;
+  padding-bottom: ${props => props.aspectRatio}%;
+  width: 100%;
+`;
 
-    ${
-    props => props.rows &&
-        css`grid-template-rows: repeat(${props.rows}, 25px);`
-    }
-
-    ${
-    props => {
+const ResizeWindow = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  min-width: ${props => props.columns * 6}px;
+  max-width: 100%;
+  background: var(--empty-node-clr);
+  border-radius: 10px;
+  overflow: hidden;
+  resize: horizontal;
+  border: 3px solid black;
+  ${props => {
         if (!props.fullscreen) {
             return;
         }
         const { screen } = window;
         const { width, height } = screen;
-        const nodesOnShorterDimension = width > height ? props.rows : props.columns;
-        const nodeSize = `calc(100vmin / ${nodesOnShorterDimension})`;
-
+        const calculatedWidth = height > width ? '100vmin' : `${props.aspectRatio}vmax`;
         return css`
-            grid-template-columns: repeat(${props.columns}, ${nodeSize});
-            grid-template-rows: repeat(${props.rows}, ${nodeSize});
-            border: none;
-            overflow: hidden;
-            position: absolute;
-            padding: 0;
-            left: 0;
+            left: calc((100vw - ${calculatedWidth}) / 2);
             top: 0;
-            height: 100vh;
-            width: 100vw;`
+            position: absolute;
+            width: ${calculatedWidth};
+            max-width: ${calculatedWidth};
+        `;
     }
     }
 `;
 
-export default GridContainer;
+export default function ResizableGrid(props) {
+    const aspectRatio = (props.rows / props.columns) * 100;
+    return (
+        <ResizeWindow fullscreen={props.fullscreen} aspectRatio={aspectRatio} columns={props.columns}>
+            <GridWrapper aspectRatio={aspectRatio}>
+                <GridContainer {...props} />
+            </GridWrapper>
+        </ResizeWindow>);
+};

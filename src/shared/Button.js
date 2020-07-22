@@ -3,11 +3,10 @@ import styled, { css } from 'styled-components';
 const Button = styled.button`
   border-radius: 10px;
   background-color: ${props => props.primary ? 'var(--primary-clr)' : 'var(--secondary-clr)'};
-  font-size: 1.5rem;
+  font-size: clamp(1.4rem, 3.8vmin, 4rem);
   color: var(--light-text-clr);
   padding: ${props => props.children ? '.5em .75em' : '.75em'};
   text-align: center;
-  max-width: 100px;
   margin: .4rem;
   border: 2px solid black;
   cursor: pointer;

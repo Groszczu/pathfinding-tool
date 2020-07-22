@@ -19,6 +19,7 @@ const FullscreenButton = () => {
         <Button onClick={boundToggleFullscreen}
             style={{
                 position: 'fixed',
+                maxWidth: 'none',
                 left: 0,
                 bottom: 0,
                 zIndex: '2'

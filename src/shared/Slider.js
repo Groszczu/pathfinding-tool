@@ -3,8 +3,7 @@ import styled from 'styled-components';
 const Slider = styled.input.attrs(() => ({
   type: 'range',
 }))`
-  width: ${props => props.width};
-  max-height: 25px;
+  width: 100%;
 `;
 
 export default Slider;

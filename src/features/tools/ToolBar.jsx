@@ -8,6 +8,7 @@ import FullscreenFlexContainer from '../../shared/FullscreenFlexContainer';
 import AnimationSpeedSlider from './AnimationSpeedSlider';
 import { useState } from 'react';
 import AlgorithmPicker from './AlgorithmPicker';
+import InlineFlex from '../../shared/InlineFlex';
 
 const ToolBar = () => {
     const dispatch = useDispatch();
@@ -30,26 +31,28 @@ const ToolBar = () => {
         >
             {!fullscreen || hovered || focused
                 ? <>
-                    {Array.from(toolTypes).map(type => <Button
-                        key={type}
-                        onClick={() => boundSetToolType(type)}
-                        selected={type === selected}
-                        style={{
-                            backgroundColor: nodeTypeColor[type],
-                            maxWidth: '.75em',
-                            margin: '.2em',
-                        }} />)}
+                    <InlineFlex>
+                        {Array.from(toolTypes).map(type => <Button
+                            key={type}
+                            onClick={() => boundSetToolType(type)}
+                            selected={type === selected}
+                            style={{
+                                backgroundColor: nodeTypeColor[type],
+                                maxWidth: '.75em',
+                                margin: '.2em',
+                            }} />)}
+                    </InlineFlex>
                     <AnimationSpeedSlider />
                     <AlgorithmPicker />
                 </>
                 : <Button
-                        selected={true}
-                        style={{
-                            backgroundColor: nodeTypeColor[selected],
-                            maxWidth: '.75em',
-                            margin: '.2em .4em',
-                        }}
-                    />
+                    selected={true}
+                    style={{
+                        backgroundColor: nodeTypeColor[selected],
+                        maxWidth: '.75em',
+                        margin: '.2em .4em',
+                    }}
+                />
             }
         </FullscreenFlexContainer>
     );

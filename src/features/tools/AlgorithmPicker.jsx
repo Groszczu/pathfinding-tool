@@ -7,12 +7,11 @@ import InlineFlex from '../../shared/InlineFlex';
 import Label from '../../shared/Label';
 
 const Select = styled.select`
-    width: 80%;
-    max-width: 300px;
-    font-size: 1.4rem;
+    width: 90%;
     color: var(--text-clr);
     border-radius: 5px;
     border: 3px solid black;
+    font-size: inherit;
     padding: .2em .4em;
     background-color: var(--empty-node-clr);
 `;

@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import GridContainer from '../../shared/GridContainer';
 import Node from './Node';
-import { draw, changeSelectedTool, changeToPreviousTool } from './nodesSlice';
+import { draw, changeSelectedTool } from './nodesSlice';
 import NodeTypes from './NodeTypes';
 
 const Nodes = () => {
@@ -40,11 +40,15 @@ const Nodes = () => {
         mousePressed.current = false;
         switch (e.button) {
             case 0: //left click
-                dragging.current && dispatch(changeToPreviousTool());
+                // if left click is released
+                // and it was dragging start/end note
+                // set draw tool to previous one
+                dragging.current && dispatch(changeSelectedTool(NodeTypes.wall));
                 dragging.current = false;
                 break;
             case 2: //right click
-                dispatch(changeToPreviousTool());
+                // if right click is released set draw tool to wall type
+                dispatch(changeSelectedTool(NodeTypes.wall));
                 break
             default: break;
         }

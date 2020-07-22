@@ -5,11 +5,13 @@ import TitleHeader from '../shared/TitleHeader';
 import ToolBar from '../features/tools/ToolBar.jsx';
 import FullscreenButton from '../features/tools/FullscreenButton.jsx';
 import OperationsPanel from '../features/tools/OperationsPanel.jsx';
+import { useSelector } from 'react-redux';
 
 function App() {
+  const fullscreen = useSelector(({ tools }) => tools.fullscreen);
   return (
     <Container>
-      <TitleHeader>Pathfinding tool</TitleHeader>
+      {fullscreen || <TitleHeader>Pathfinding tool</TitleHeader>}
       <ToolBar />
       <Nodes />
       <OperationsPanel />
