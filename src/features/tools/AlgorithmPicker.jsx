@@ -28,8 +28,8 @@ const AlgorithmPicker = () => {
     }
     return (
         <InlineFlex direction='column'>
-            <Label>Algorithm</Label>
-            <Select onChange={handleChange} value={selectedAlgorithm}>
+            <Label htmlFor={'algorithm-select'}>Algorithm</Label>
+            <Select id={'algorithm-select'} onChange={handleChange} value={selectedAlgorithm}>
                 {Object.entries(algorithmId).map(([key, value]) =>
                     <Option key={key} value={value} isSelected={selectedAlgorithm === value}>{value}</Option>)}
             </Select>

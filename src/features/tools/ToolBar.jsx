@@ -32,7 +32,7 @@ const ToolBar = () => {
             {!fullscreen || hovered || focused
                 ? <>
                     <InlineFlex>
-                        {Array.from(toolTypes).map(type => <Button
+                        {Array.from(toolTypes).map(type => <Button aria-label={`${type} button`}
                             key={type}
                             onClick={() => boundSetToolType(type)}
                             selected={type === selected}

@@ -29,8 +29,9 @@ const AnimationSpeedSlider = () => {
     const isReady = state === pathfindingState.ready;
     return (
         <InlineFlex direction='column'>
-            <Label>Animation: {internalAnimationTime}ms</Label>
+            <Label htmlFor={'animation-speed-range'}>Animation: {internalAnimationTime}ms</Label>
             <Slider
+                id={'animation-speed-range'}
                 value={internalAnimationTime}
                 disabled={!isReady}
                 min={0}
