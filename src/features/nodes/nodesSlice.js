@@ -30,7 +30,7 @@ function initNodesState(cols, rows) {
         startNode,
         endNode,
         pathfinding: pathfindingState.ready,
-        selectedDrawTool: NodeTypes.wall,
+        drawTool: NodeTypes.wall,
     };
 }
 
@@ -55,12 +55,12 @@ const nodesSlice = createSlice({
                 default: break;
             }
         },
-        changeSelectedTool: (state, { payload }) => {
+        changeDrawTool: (state, { payload }) => {
             const toolType = payload;
             if (!isToolType(toolType)) {
                 return;
             }
-            state.selectedDrawTool = toolType;
+            state.drawTool = toolType;
         },
         draw: (state, action) => {
             if (state.pathfinding === pathfindingState.running) {
@@ -70,7 +70,7 @@ const nodesSlice = createSlice({
                 state.nodes = clearNotToolNodes(state.nodes);
                 state.pathfinding = pathfindingState.ready;
             }
-            action.payload.type = state.selectedDrawTool;
+            action.payload.type = state.drawTool;
             setNodesTypeReady(state, action);
         },
         clearNodes: (state) => {
@@ -87,7 +87,7 @@ export const {
     changeRows,
     startPathfinding,
     setNodesType,
-    changeSelectedTool,
+    changeDrawTool,
     draw,
     clearNodes,
     resetNodes,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { toolTypes, nodeTypeColor } from '../nodes/NodeTypes';
-import { changeSelectedTool } from '../nodes/nodesSlice';
+import { changeDrawTool } from '../nodes/nodesSlice';
 import Button from '../../shared/Button';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -14,10 +14,10 @@ const ToolBar = () => {
     const dispatch = useDispatch();
     const [hovered, setHovered] = useState(false);
     const [focused, setFocused] = useState(false);
-    const selected = useSelector(({ nodes }) => nodes.selectedDrawTool);
+    const selectedDrawToolType = useSelector(({ nodes }) => nodes.drawTool);
     const fullscreen = useSelector(({ tools }) => tools.fullscreen);
 
-    const boundSetToolType = (toolType) => dispatch(changeSelectedTool(toolType));
+    const boundSetToolType = (toolType) => dispatch(changeDrawTool(toolType));
 
     return (
         <FullscreenFlexContainer
@@ -35,7 +35,7 @@ const ToolBar = () => {
                         {Array.from(toolTypes).map(type => <Button aria-label={`${type} button`}
                             key={type}
                             onClick={() => boundSetToolType(type)}
-                            selected={type === selected}
+                            selected={type === selectedDrawToolType}
                             style={{
                                 backgroundColor: nodeTypeColor[type],
                                 maxWidth: '.75em',
@@ -48,7 +48,7 @@ const ToolBar = () => {
                 : <Button
                     selected={true}
                     style={{
-                        backgroundColor: nodeTypeColor[selected],
+                        backgroundColor: nodeTypeColor[selectedDrawToolType],
                         maxWidth: '.75em',
                         margin: '.2em .4em',
                     }}
