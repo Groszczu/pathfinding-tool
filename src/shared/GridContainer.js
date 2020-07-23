@@ -1,5 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { useRef } from 'react';
+import { useEffect } from 'react';
 
 const GridContainer = styled.div`
     display: grid;
@@ -24,7 +26,6 @@ const GridWrapper = styled.div`
 `;
 
 const ResizeWindow = styled.div`
-  width: 100%;
   margin: 0 auto;
   min-width: ${props => props.columns * 6}px;
   max-width: 100%;
@@ -44,7 +45,6 @@ const ResizeWindow = styled.div`
             left: calc((100vw - ${calculatedWidth}) / 2);
             top: 0;
             position: absolute;
-            width: ${calculatedWidth};
             max-width: ${calculatedWidth};
         `;
     }
@@ -52,9 +52,16 @@ const ResizeWindow = styled.div`
 `;
 
 export default function ResizableGrid(props) {
+    const resizeWindowRef = useRef(null);
+
+    useEffect(() => {
+        // override resized width on fullscreen toggle
+        resizeWindowRef.current.style.width = '100%';
+    }, [props.fullscreen]);
+
     const aspectRatio = (props.rows / props.columns) * 100;
     return (
-        <ResizeWindow fullscreen={props.fullscreen} aspectRatio={aspectRatio} columns={props.columns}>
+        <ResizeWindow ref={resizeWindowRef} fullscreen={props.fullscreen} aspectRatio={aspectRatio} columns={props.columns}>
             <GridWrapper aspectRatio={aspectRatio}>
                 <GridContainer {...props} />
             </GridWrapper>

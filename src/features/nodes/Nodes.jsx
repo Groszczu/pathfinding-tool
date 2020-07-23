@@ -42,7 +42,7 @@ const Nodes = () => {
             case 0: //left click
                 // if left click is released
                 // and it was dragging start/end note
-                // set draw tool to previous one
+                // set draw tool to wall type
                 dragging.current && dispatch(changeSelectedTool(NodeTypes.wall));
                 dragging.current = false;
                 break;

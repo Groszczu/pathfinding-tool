@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createEmptyNodes, isStartOrEndNode } from './nodeHelpers';
+import { createEmptyNodes, isStartOrEndNode, clearNotToolNodes } from './nodeHelpers';
 import NodeTypes, { isToolType } from './NodeTypes';
 
 
@@ -63,20 +63,18 @@ const nodesSlice = createSlice({
             state.selectedDrawTool = toolType;
         },
         draw: (state, action) => {
-            if (state.pathfinding !== pathfindingState.ready) {
+            if (state.pathfinding === pathfindingState.running) {
                 return;
+            }
+            if (state.pathfinding === pathfindingState.done) {
+                state.nodes = clearNotToolNodes(state.nodes);
+                state.pathfinding = pathfindingState.ready;
             }
             action.payload.type = state.selectedDrawTool;
             setNodesTypeReady(state, action);
         },
         clearNodes: (state) => {
-            const { nodes } = state;
-            nodes.forEach(row => row.forEach(node => {
-                if (!isToolType(node.type)) {
-                    node.type = NodeTypes.empty;
-                }
-                node.visitedIndex = null;
-            }));
+            state.nodes = clearNotToolNodes(state.nodes);
             state.pathfinding = pathfindingState.ready;
         },
         resetNodes: () => defaultState
@@ -146,27 +144,20 @@ function setNodesTypeRunning(state, { payload }) {
     const { startNode, endNode } = state;
 
     switch (type) {
-        case NodeTypes.visited: {
+        case NodeTypes.visited:
+        case NodeTypes.result: {
             nodes.forEach(node => {
                 if (isStartOrEndNode(node, startNode, endNode)) {
                     return;
                 }
                 const stateNode = state.nodes[node.y][node.x];
-                stateNode.type = NodeTypes.visited;
+                stateNode.type = type;
                 stateNode.visitedIndex = node.visitedIndex;
-            });
-            break;
-        }
-        case NodeTypes.result: {
-            nodes.forEach((node, i) => {
-                if (isStartOrEndNode(node, startNode, endNode)) {
-                    return;
+
+                if (type === NodeTypes.result) {
+                    state.pathfinding = pathfindingState.done;
                 }
-                const stateNode = state.nodes[node.y][node.x];
-                stateNode.type = NodeTypes.result;
-                stateNode.visitedIndex = i;
             });
-            state.pathfinding = pathfindingState.done;
             break;
         }
         default: break;

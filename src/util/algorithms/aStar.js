@@ -8,8 +8,7 @@ export function basicAStar(nodes, startNode, endNode, heuristic) {
 
     let unvisited = heuristic.addHeuristics(flatNodes, startNode, endNode);
 
-    let i = 0;
-    for (; unvisited.length !== 0; i++) {
+    for (let i = 0; unvisited.length !== 0; i++) {
         unvisited.sort(heuristic.comparer);
         const currentNode = unvisited[0];
 
@@ -32,11 +31,11 @@ export function basicAStar(nodes, startNode, endNode, heuristic) {
 
     const result = [];
     const endNodeData = visited.find(n => n.type === NodeTypes.end);
-    for (let node = endNodeData.previousNode; node?.type !== NodeTypes.start; node = node.previousNode) {
+    for (let i = 0, node = endNodeData.previousNode; node?.type !== NodeTypes.start; node = node.previousNode, i++) {
         if (!node) {
             return { visited, result };
         }
-        result.push(node);
+        result.push({ ...node, visitedIndex: i });
     }
 
     return { visited, result };

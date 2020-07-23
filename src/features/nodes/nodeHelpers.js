@@ -1,4 +1,4 @@
-import NodeTypes, { isChangeableType } from './NodeTypes';
+import NodeTypes, { isChangeableType, isToolType } from './NodeTypes';
 
 export function createEmptyNodes(cols, rows) {
   return Array(rows).fill(0).map((_, row) =>
@@ -36,4 +36,13 @@ export function isStartOrEndNode(node, startNode, endNode) {
 
 export function distance(a, b) {
   return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+}
+
+export function clearNotToolNodes(nodes) {
+  return nodes.map(row => row.map(node => {
+    if (!isToolType(node.type)) {
+      return createNode(node.x ,node.y, NodeTypes.empty);
+    }
+    return node;
+  }));
 }
