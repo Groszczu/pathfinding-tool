@@ -23,14 +23,17 @@ const Square = styled.span.attrs(({ delay, x, y }) => ({
 const Node = ({ animationFrameTime, x, y, onMouseDown, onMouseOver }) => {
   const node = useSelector(({ nodes }) => nodes.nodes[y][x]);
 
+  const handleMouseDown = () => onMouseDown(node);
+  const handleMouseOver = () => onMouseOver(node);
+
   return (
     <Square
       delay={node.visitedIndex * animationFrameTime}
       type={node.type}
       x={node.x}
       y={node.y}
-      onMouseDown={() => onMouseDown(node)}
-      onMouseOver={() => onMouseOver(node)}
+      onMouseDown={handleMouseDown}
+      onMouseOver={handleMouseOver}
     />
   );
 };

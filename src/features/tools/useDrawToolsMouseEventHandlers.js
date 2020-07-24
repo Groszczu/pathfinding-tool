@@ -4,6 +4,11 @@ import NodeTypes from '../nodes/NodeTypes';
 import { setDrawTool } from './toolsSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
+const mouseButtonCodes = {
+  leftClick: 0,
+  rightClick: 2,
+};
+
 const setInternalDrawToolAndDispatch = (dispatch, drawToolRef, toolType) => {
   drawToolRef.current = toolType;
   dispatch(setDrawTool(toolType));
@@ -23,8 +28,7 @@ const useDrawToolsMouseEventHandlers = () => {
   }, [drawTool]);
 
   const handleMouseDown = (e) => {
-    // right click
-    if (e.button === 2) {
+    if (e.button === mouseButtonCodes.rightClick) {
       setInternalDrawToolAndDispatch(dispatch, drawToolRef, NodeTypes.empty);
     }
     mousePressedRef.current = true;
@@ -34,7 +38,8 @@ const useDrawToolsMouseEventHandlers = () => {
     // if left click is released
     // and it was dragging start/end note
     // set draw tool to wall type
-    draggingRef.current && setInternalDrawToolAndDispatch(dispatch, drawToolRef, NodeTypes.wall);
+    draggingRef.current &&
+      setInternalDrawToolAndDispatch(dispatch, drawToolRef, NodeTypes.wall);
     draggingRef.current = false;
   };
 
@@ -45,10 +50,10 @@ const useDrawToolsMouseEventHandlers = () => {
   const handleMouseUp = (e) => {
     mousePressedRef.current = false;
     switch (e.button) {
-      case 0:
+      case mouseButtonCodes.leftClick:
         onLeftClickUp();
         break;
-      case 2:
+      case mouseButtonCodes.rightClick:
         onRightClickUp();
         break;
       default:

@@ -1,8 +1,7 @@
 import React from 'react';
 import Button from '../../shared/Button';
 import { enterFullscreen, exitFullscreen } from '../tools/toolsSlice';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const enterFullscreenThunk = async (dispatch) => {
   await document.getElementById('root').requestFullscreen();
