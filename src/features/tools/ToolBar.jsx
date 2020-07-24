@@ -1,61 +1,39 @@
 import React from 'react';
-import { toolTypes, nodeTypeColor } from '../nodes/NodeTypes';
-import { changeDrawTool } from '../nodes/nodesSlice';
-import Button from '../../shared/Button';
-import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import FullscreenFlexContainer from '../../shared/FullscreenFlexContainer';
 import AnimationSpeedSlider from './AnimationSpeedSlider';
 import { useState } from 'react';
 import AlgorithmPicker from './AlgorithmPicker';
-import InlineFlex from '../../shared/InlineFlex';
+import SelectedDrawToolButton from './SelectedDrawToolButton';
+import DrawToolPicker from './DrawToolPicker';
 
 const ToolBar = () => {
-    const dispatch = useDispatch();
-    const [hovered, setHovered] = useState(false);
-    const [focused, setFocused] = useState(false);
-    const selectedDrawToolType = useSelector(({ nodes }) => nodes.drawTool);
-    const fullscreen = useSelector(({ tools }) => tools.fullscreen);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const fullscreen = useSelector(({ tools }) => tools.fullscreen);
 
-    const boundSetToolType = (toolType) => dispatch(changeDrawTool(toolType));
-
-    return (
-        <FullscreenFlexContainer
-            fullscreen={fullscreen}
-            top={0} right={0}
-            zIndex={100}
-            onMouseEnter={fullscreen ? () => setHovered(true) : null}
-            onMouseLeave={fullscreen ? () => setHovered(false) : null}
-            onFocus={fullscreen ? () => setFocused(true) : null}
-            onBlur={fullscreen ? () => setFocused(false) : null}
-        >
-            {!fullscreen || hovered || focused
-                ? <>
-                    <InlineFlex>
-                        {Array.from(toolTypes).map(type => <Button aria-label={`${type} button`}
-                            key={type}
-                            onClick={() => boundSetToolType(type)}
-                            selected={type === selectedDrawToolType}
-                            style={{
-                                backgroundColor: nodeTypeColor[type],
-                                maxWidth: '.75em',
-                                margin: '.2em',
-                            }} />)}
-                    </InlineFlex>
-                    <AnimationSpeedSlider />
-                    <AlgorithmPicker />
-                </>
-                : <Button
-                    selected={true}
-                    style={{
-                        backgroundColor: nodeTypeColor[selectedDrawToolType],
-                        maxWidth: '.75em',
-                        margin: '.2em .4em',
-                    }}
-                />
-            }
-        </FullscreenFlexContainer>
-    );
-}
+  return (
+    <FullscreenFlexContainer
+      fullscreen={fullscreen}
+      top={0}
+      right={0}
+      zIndex={100}
+      onMouseEnter={fullscreen ? () => setHovered(true) : null}
+      onMouseLeave={fullscreen ? () => setHovered(false) : null}
+      onFocus={fullscreen ? () => setFocused(true) : null}
+      onBlur={fullscreen ? () => setFocused(false) : null}
+    >
+      {!fullscreen || hovered || focused ? (
+        <>
+          <DrawToolPicker />
+          <AnimationSpeedSlider />
+          <AlgorithmPicker />
+        </>
+      ) : (
+        <SelectedDrawToolButton />
+      )}
+    </FullscreenFlexContainer>
+  );
+};
 
 export default ToolBar;

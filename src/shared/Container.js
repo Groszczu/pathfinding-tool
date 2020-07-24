@@ -6,7 +6,7 @@ const Container = styled.div`
   max-width: 1920px;
   text-align: center;
   border-radius: 10px;
-  
+
   @media (max-width: 1024px) {
     width: 80%;
   }

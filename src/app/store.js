@@ -4,7 +4,7 @@ import toolsReducer from '../features/tools/toolsSlice';
 
 const reducer = {
   nodes: nodesReducer,
-  tools: toolsReducer
+  tools: toolsReducer,
 };
 
 export default configureStore({

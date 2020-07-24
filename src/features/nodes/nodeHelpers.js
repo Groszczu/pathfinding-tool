@@ -1,8 +1,13 @@
 import NodeTypes, { isChangeableType, isToolType } from './NodeTypes';
 
 export function createEmptyNodes(cols, rows) {
-  return Array(rows).fill(0).map((_, row) =>
-    Array(cols).fill(0).map((_, col) => createNode(col, row)));
+  return Array(rows)
+    .fill(0)
+    .map((_, row) =>
+      Array(cols)
+        .fill(0)
+        .map((_, col) => createNode(col, row))
+    );
 }
 
 export function createNode(x, y, type = NodeTypes.empty) {
@@ -24,7 +29,6 @@ export function neighbors(node1, node2) {
 
 export function validateNodeTypeChange(node, newType) {
   return validateNodeChange(node) && isChangeableType(newType);
-
 }
 export function validateNodeChange(node) {
   return !node.type === NodeTypes.start && !node.type === NodeTypes.end;
@@ -39,10 +43,12 @@ export function distance(a, b) {
 }
 
 export function clearNotToolNodes(nodes) {
-  return nodes.map(row => row.map(node => {
-    if (!isToolType(node.type)) {
-      return createNode(node.x ,node.y, NodeTypes.empty);
-    }
-    return node;
-  }));
+  return nodes.map((row) =>
+    row.map((node) => {
+      if (!isToolType(node.type)) {
+        return createNode(node.x, node.y, NodeTypes.empty);
+      }
+      return node;
+    })
+  );
 }

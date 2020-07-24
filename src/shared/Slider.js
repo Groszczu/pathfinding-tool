@@ -4,7 +4,7 @@ const Slider = styled.input.attrs(() => ({
   type: 'range',
 }))`
   width: 90%;
-  padding: .4em;
+  padding: 0.4em;
 `;
 
 export default Slider;
