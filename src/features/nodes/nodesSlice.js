@@ -46,6 +46,11 @@ const nodesSlice = createSlice({
         state.pathfinding = pathfindingState.running;
       }
     },
+    endPathfinding: (state) => {
+      if (state.pathfinding === pathfindingState.running) {
+        state.pathfinding = pathfindingState.done;
+      }
+    },
     setNodesType: (state, action) => {
       switch (state.pathfinding) {
         case pathfindingState.ready: setNodesTypeReady(state, action); break;
@@ -64,6 +69,7 @@ export const {
   changeColumns,
   changeRows,
   startPathfinding,
+  endPathfinding,
   setNodesType,
   clearNodes,
   resetNodes,

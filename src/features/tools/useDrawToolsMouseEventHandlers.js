@@ -2,7 +2,7 @@ import { useRef, useEffect, useCallback } from 'react';
 import { setNodesType } from '../nodes/nodesSlice';
 import NodeTypes from '../nodes/NodeTypes';
 import { setDrawTool } from './toolsSlice';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const mouseButtonCodes = {
   leftClick: 0,
@@ -14,14 +14,12 @@ const setInternalDrawToolAndDispatch = (dispatch, drawToolRef, toolType) => {
   dispatch(setDrawTool(toolType));
 };
 
-const useDrawToolsMouseEventHandlers = () => {
+const useDrawToolsMouseEventHandlers = (dispatch) => {
   const mousePressedRef = useRef(false);
   const draggingRef = useRef(false);
 
   const drawTool = useSelector(({ tools }) => tools.drawTool);
   const drawToolRef = useRef(drawTool);
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     drawToolRef.current = drawTool;
