@@ -26,7 +26,7 @@ const Slider = styled.input.attrs(() => ({
 
   &::-moz-range-thumb {
     appearance: none;
-    cursor: ew-resize;
+    cursor: ${props => props.disabled ? 'not-allowed' : 'ew-resize'};
     width: 16px;
     height: 16px;
     background: var(--primary-clr);
